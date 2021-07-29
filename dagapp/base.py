@@ -2,51 +2,24 @@
 
 import streamlit as st
 from i2 import Sig
-
-dflt_type = {int: 0, float: 0.0}
-
-
-def infer_default(dag, name):
-    if name in dag.leafs:
-        return 0
-
-    for func_node in dag.func_nodes:
-        if name in func_node.sig.defaults:
-            dflt = func_node.sig.defaults[name]
-            if dflt is not None:
-                return dflt
-        elif name in func_node.sig.annotations:
-            return dflt_type[func_node.sig.annotations[name]]
+from dagapp.utils import get_values, get_funcs, get_nodes, check_configs
 
 
-def get_funcs(dag):
-    funcs = dict()
-    for func_node in dag.func_nodes:
-        funcs[func_node.name[:-1]] = func_node
-    return funcs
-
-
-def get_nodes(dag):
-    nodes = dag.sig.names
-    for node in dag.nodes:
-        if node not in nodes and isinstance(node, str):
-            nodes.append(node)
-    return nodes
-
-
-def display_factory(nodes, dag, funcs, col):
-    for node in nodes:
-        with col:
-            st.number_input(
-                node,
-                value=infer_default(dag, node),
+def display_factory(dag, nodes, funcs, values, slider, ranges, col):
+    with col:
+        for node in nodes:
+            kwargs = dict(
+                value=values[node],
                 on_change=update_nodes,
-                args=(
-                    dag,
-                    funcs,
-                ),
+                args=(dag, funcs),
                 key=node,
             )
+            if slider:
+                kwargs["min_value"] = ranges[node][0]
+                kwargs["max_value"] = ranges[node][1]
+                st.slider(node, **kwargs)
+            else:
+                st.number_input(node, **kwargs)
 
 
 def update_nodes(dag, funcs):
@@ -57,15 +30,16 @@ def update_nodes(dag, funcs):
 
 
 class BasePageFunc:
-    def __init__(self, dag, page_title: str = ""):
+    def __init__(self, dag, page_title: str = "", **config):
         self.dag = dag
         self.page_title = page_title
         self.sig = Sig(dag)
+        self.configs = config
 
     def __call__(self):
         if self.page_title:
             st.markdown(f"""## **{self.page_title}**""")
-        st.write(Sig(self.func))
+        st.write(Sig(self.dag))
 
 
 class SimplePageFunc(BasePageFunc):
@@ -79,28 +53,41 @@ class SimplePageFunc(BasePageFunc):
 
         funcs = get_funcs(self.dag)
         nodes = get_nodes(self.dag)
+        values = get_values(self.dag, funcs)
 
-        display_factory(nodes, self.dag, funcs, c1)
+        if self.configs["slider"]:
+            ranges = self.configs["ranges"]
+            display_factory(self.dag, nodes, funcs, values, True, ranges, c1)
+        else:
+            display_factory(self.dag, nodes, funcs, values, False, None, c1)
 
 
 def dag_to_page_name(dag):
     return f"{list(dag.leafs)[0].capitalize()} Calculator"
 
 
-def get_page_callbacks(dags, page_names):
-    return [SimplePageFunc(dag, page_name) for dag, page_name in zip(dags, page_names)]
+def get_page_callbacks(dags, page_names, configs):
+    return [
+        SimplePageFunc(dag, page_name, **config)
+        for dag, page_name, config in zip(dags, page_names, configs)
+    ]
 
 
-def get_pages_specs(dags):
+def get_pages_specs(dags, configs):
     page_names = [dag_to_page_name(dag) for dag in dags]
-    page_callbacks = get_page_callbacks(dags, page_names)
+    page_callbacks = get_page_callbacks(dags, page_names, configs)
     return dict(zip(page_names, page_callbacks))
 
 
-def dag_app(dags):
+def dag_app(dags, configs=None):
+    if configs is None:
+        configs = [{"slider": False} for _ in range(len(dags))]
+
+    check_configs(dags, configs)
+
     st.set_page_config(layout="wide")
 
-    pages = get_pages_specs(dags)
+    pages = get_pages_specs(dags, configs)
 
     st.sidebar.title("Navigation")
     page = st.sidebar.radio("Select your page", tuple(pages.keys()))

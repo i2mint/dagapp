@@ -5,20 +5,20 @@ from meshed.dag import DAG
 from functools import partial
 
 
-def thing1(a, b):
-    return a + b
+def b(a):
+    return 2 ** a
 
 
-def thing2(c, d):
-    return c - d
+def d(c):
+    return 10 - (5 ** c)
 
 
-def result(thing1, thing2):
-    return thing1 * thing2
+def result(b, d):
+    return b * d
 
 
 dags = [
-    DAG((thing1, thing2, result)),
+    DAG((b, d, result)),
 ]
 
 if __name__ == "__main__":

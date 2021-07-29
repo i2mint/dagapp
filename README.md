@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
 ### ... and this is what you get
 
-![dagapp example](docs/images/example.png)
+![png](docs/images/example.png)
 
 
 

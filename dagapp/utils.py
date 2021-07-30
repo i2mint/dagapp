@@ -1,8 +1,62 @@
 """Utils"""
 
 import streamlit as st
+from typing import Mapping, Iterable, Any
 
-DFLT_VALS = {int: 0, float: 0.0}
+DFLT_VALS = {
+    int: 0,
+    float: 0.0,
+    Iterable[int]: [0],
+    Mapping[str, int]: ["tp", "fn", "fp", "tn"],
+}
+
+WIDGET_TYPE = {
+    "num": st.number_input,
+    "slider": st.slider,
+    "string": st.text_input,
+    "dict": st.text_input,
+}
+
+
+def input_factory(dag, nodes, funcs, values, col):
+    with col:
+        for node in nodes:
+            st_kwargs = dict(
+                value=values[node],
+                on_change=update_nodes,
+                args=(dag, funcs),
+                key=node,
+            )
+            if slider:
+                st_kwargs["min_value"] = ranges[node][0]
+                st_kwargs["max_value"] = ranges[node][1]
+                st.slider(node, *st_kwargs)
+            else:
+                st.number_input(node, **st_kwargs)
+
+
+def display_factory(dag, nodes, funcs, values, slider, ranges, col):
+    with col:
+        for node in nodes:
+            st_kwargs = dict(
+                value=values[node],
+                on_change=update_nodes,
+                args=(dag, funcs),
+                key=node,
+            )
+            if slider:
+                st_kwargs["min_value"] = ranges[node][0]
+                st_kwargs["max_value"] = ranges[node][1]
+                st.slider(node, *st_kwargs)
+            else:
+                st.number_input(node, **st_kwargs)
+
+
+def update_nodes(dag, funcs):
+    for node in dag.var_nodes:
+        if node not in dag.roots:
+            args = [st.session_state[arg] for arg in list(funcs[node].src_names.keys())]
+            st.session_state[node] = funcs[node].func(*args)
 
 
 def get_values(dag, funcs):
@@ -49,15 +103,21 @@ def check_configs(dags, configs):
 
     for dag, config in zip(dags, configs):
         if "slider" not in config:
-            st_error("You need to define if you want slider or number input in your configs!")
-        elif config['slider']:
-            if 'ranges' not in config:
+            st_error(
+                "You need to define if you want slider or number input in your configs!"
+            )
+        elif config["slider"]:
+            if "ranges" not in config:
                 st_error("You need to define your slider ranges if you want sliders!")
             else:
-                if not isinstance(config['ranges'], dict):
-                    st_error("You need to define your slider ranges as a dictionary of two-element lists!")
-                elif not set(get_nodes(dag)).issubset(set(config['ranges'].keys())):
-                    st_error("You need to define a slider range for every component of your DAG!")
+                if not isinstance(config["ranges"], dict):
+                    st_error(
+                        "You need to define your slider ranges as a dictionary of two-element lists!"
+                    )
+                elif not set(get_nodes(dag)).issubset(set(config["ranges"].keys())):
+                    st_error(
+                        "You need to define a slider range for every component of your DAG!"
+                    )
 
 
 def st_error(message):

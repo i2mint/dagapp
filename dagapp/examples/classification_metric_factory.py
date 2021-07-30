@@ -2,6 +2,12 @@
 
 from collections import Counter
 import numpy as np
+from functools import partial
+from typing import Mapping, Iterable, Any
+
+from meshed.dag import DAG
+from dagapp.base import dag_app
+from dagapp.page_funcs import BinaryClassificationPageFunc
 
 
 def _aligned_items(a, b):
@@ -24,7 +30,9 @@ def _dot_product(a, b):
     return sum(ak * bk for _, ak, bk in _aligned_items(a, b))
 
 
-def classifier_score(confusion_count, confusion_value):
+def classifier_score(
+    confusion_count: Mapping[str, int], confusion_value: Mapping[str, int]
+):
     """Compute a score for a classifier that produced the `confusion_count`, based on
     the given `confusion_value`.
     Meant to be curried by fixing the confusion_value dict.
@@ -35,20 +43,41 @@ def classifier_score(confusion_count, confusion_value):
     values to multiply and
     considering a missing key as an expression of a null value.
     """
-    return _dot_product(confusion_count, confusion_value) / sum(confusion_count.values())
+    return _dot_product(confusion_count, confusion_value) / sum(
+        confusion_count.values()
+    )
 
 
-def confusion_count(prediction, truth):
-    """Get a dict containing the counts of all combinations of predicction and
+def confusion_count(prediction: Iterable[int], truth: Iterable[int], positive: int = 1):
+    """Get a dict containing the counts of all combinations of prediction and
     corresponding truth values.
 
     >>> confusion_count(
     ... [0, 0, 1, 0, 1, 1, 1],
     ... [0, 0, 0, 1, 1, 1, 1]
     ... )
-    Counter({(0, 0): 2, (1, 0): 1, (0, 1): 1, (1, 1): 3})
+    {'tn': 2, 'fp': 1, 'fn': 1, 'tp': 3}
     """
-    return Counter(zip(prediction, truth))
+    confusion = dict(Counter(zip(prediction, truth)))
+    keys = list(confusion.keys())
+    for key in keys:
+        if key[0] == key[1]:
+            if key[1] == positive:
+                confusion["tp"] = confusion[key]
+            else:
+                confusion["tn"] = confusion[key]
+        else:
+            if key[1] == positive:
+                confusion["fn"] = confusion[key]
+            else:
+                confusion["fp"] = confusion[key]
+        del confusion[key]
+
+    keys = [key for key in ["tp", "tn", "fn", "fp"] if key not in confusion.keys()]
+    for key in keys:
+        confusion[key] = 0
+
+    return confusion
 
 
 def prediction(predict_proba, threshold):
@@ -56,7 +85,6 @@ def prediction(predict_proba, threshold):
 
     >>> prediction([0.3, 0.4, 0.5, 0.6, 0.7, 0.8], threshold=0.5)
     array([False, False,  True,  True,  True,  True])
-
     """
     return np.array(predict_proba) >= threshold
 
@@ -64,3 +92,28 @@ def prediction(predict_proba, threshold):
 def predict_proba(model, test_X):
     """Get the prediction_proba scores of a model given some test data"""
     return model.predict_proba(test_X)
+
+
+dags = [DAG((confusion_count, classifier_score))]
+configs = [
+    dict(
+        arg_types=dict(
+            prediction="list",
+            truth="list",
+            positive="num",
+            confusion_value="dict",
+            confusion_count="dict",
+            classifier_score="num",
+        ),
+        dict_keys=dict(
+            confusion_value=["tp", "fn", "fp", "tn"],
+            confusion_count=["tp", "fn", "fp", "tn"],
+        ),
+    )
+]
+
+if __name__ == "__main__":
+    app = partial(
+        dag_app, dags=dags, configs=configs, page_factory=BinaryClassificationPageFunc
+    )
+    app()

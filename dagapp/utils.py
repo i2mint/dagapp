@@ -6,8 +6,8 @@ from typing import Mapping, Iterable, Any
 DFLT_VALS = {
     int: 0,
     float: 0.0,
-    Iterable[int]: [0],
-    Mapping[str, int]: ["tp", "fn", "fp", "tn"],
+    Iterable[int]: "0,0,0,0",
+    Mapping[str, int]: dict(tp=0, fn=0, fp=0, tn=0),
 }
 
 WIDGET_TYPE = {
@@ -17,22 +17,67 @@ WIDGET_TYPE = {
     "dict": st.text_input,
 }
 
+ARG_WIDGET_MAP = {
+    "num": st.number_input,
+    "slider": st.slider,
+    "list": st.text_input,
+    "dict": st.beta_expander,
+}
 
-def input_factory(dag, nodes, funcs, values, col):
+
+# ------------------------------------ BINARY CLASSIFICATION ------------------------------------
+
+
+def update_static_nodes(dag, nodes, funcs, col):
     with col:
-        for node in nodes:
+        for node in [node for node in nodes if node not in dag.roots]:
+            kwargs = dict()
+            for arg in list(funcs[node].sig.names):
+                arg_type = str(funcs[node].sig.annotations[arg])
+                if "typing.Iterable" in arg_type:
+                    kwargs[arg] = [int(num) for num in st.session_state[arg].split(",")]
+                elif "typing.Mapping" in arg_type:
+                    kwargs[arg] = dict(
+                        tp=st.session_state[f"{arg}_tp"],
+                        fn=st.session_state[f"{arg}_fn"],
+                        fp=st.session_state[f"{arg}_fp"],
+                        tn=st.session_state[f"{arg}_tn"],
+                    )
+                else:
+                    kwargs[arg] = st.session_state[arg]
+            val = funcs[node].func(**kwargs)
+            if isinstance(val, dict):
+                for key in val.keys():
+                    st.session_state[f"{node}_{key}"] = val[key]
+                with st.beta_expander(node):
+                    for key in val.keys():
+                        st.write(f"{key}: {st.session_state[f'{node}_{key}']}")
+            else:
+                st.session_state[node] = funcs[node].func(**kwargs)
+                st.write(f"{node}: {st.session_state[node]}")
+
+
+def binary_classification_factory(dag, nodes, funcs, values, arg_types, col):
+    with col:
+        for node in dag.sig.names:
             st_kwargs = dict(
                 value=values[node],
-                on_change=update_nodes,
-                args=(dag, funcs),
+                on_change=update_static_nodes,
+                args=(dag, nodes, funcs, col),
                 key=node,
             )
-            if slider:
-                st_kwargs["min_value"] = ranges[node][0]
-                st_kwargs["max_value"] = ranges[node][1]
-                st.slider(node, *st_kwargs)
+            if arg_types[node] == "dict":
+                with ARG_WIDGET_MAP["dict"](node):
+                    for condition in values[node].keys():
+                        st_kwargs["value"] = values[node][condition]
+                        st_kwargs["key"] = f"{node}_{condition}"
+                        st.number_input(condition, **st_kwargs)
             else:
-                st.number_input(node, **st_kwargs)
+                widget = ARG_WIDGET_MAP[arg_types[node]]
+                widget(node, **st_kwargs)
+
+
+# ------------------------------------ STANDARD UTILS ------------------------------------
 
 
 def display_factory(dag, nodes, funcs, values, slider, ranges, col):

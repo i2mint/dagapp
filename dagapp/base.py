@@ -28,7 +28,7 @@ def dag_app(dags, configs=None, page_factory=SimplePageFunc):
 
     # check_configs(dags, configs)
 
-    st.set_page_config(layout="wide")
+    # st.set_page_config(layout="wide")
 
     pages = get_pages_specs(dags, page_factory, configs)
 

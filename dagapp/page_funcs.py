@@ -1,7 +1,12 @@
 import streamlit as st
 from i2 import Sig
-from dagapp.utils import get_values, get_funcs, get_nodes, display_factory, update_nodes
-from json import loads
+from dagapp.utils import (
+    get_values,
+    get_funcs,
+    get_nodes,
+    display_factory,
+    binary_classification_factory,
+)
 
 
 class BasePageFunc:
@@ -37,18 +42,6 @@ class SimplePageFunc(BasePageFunc):
             display_factory(self.dag, nodes, funcs, values, False, None, c1)
 
 
-def string_to_list(inpt):
-    return inpt.strip("][").split(", ")
-
-
-ARG_WIDGET_MAP = {
-    "num": (st.number_input, float),
-    "slider": (st.slider, float),
-    "list": (st.text_input, loads),
-    "dict": st.beta_expander,
-}
-
-
 class BinaryClassificationPageFunc(BasePageFunc):
     def __call__(self):
         if self.page_title:
@@ -62,20 +55,4 @@ class BinaryClassificationPageFunc(BasePageFunc):
         values = get_values(self.dag, funcs)
         arg_types = self.configs["arg_types"]
 
-        with c1:
-            st.write(values)
-            st.write(arg_types)
-            for node in nodes:
-                st_kwargs = dict(
-                    value=values[node],
-                    # on_change=update_nodes,
-                    # args=(self.dag, funcs),
-                    key=node,
-                )
-                if arg_types[node] == "dict":
-                    with ARG_WIDGET_MAP["dict"](node):
-                        for thing in values[node]:
-                            st.number_input(thing, key=f"{node}{thing}")
-                else:
-                    widget, cast = ARG_WIDGET_MAP[arg_types[node]]
-                    widget(node, **st_kwargs)
+        binary_classification_factory(self.dag, nodes, funcs, values, arg_types, c1)

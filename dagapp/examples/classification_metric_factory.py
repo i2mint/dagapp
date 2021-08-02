@@ -105,10 +105,6 @@ configs = [
             confusion_count="dict",
             classifier_score="num",
         ),
-        dict_keys=dict(
-            confusion_value=["tp", "fn", "fp", "tn"],
-            confusion_count=["tp", "fn", "fp", "tn"],
-        ),
     )
 ]
 

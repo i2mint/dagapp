@@ -1,3 +1,5 @@
+"""Different page functions used to turn dags to app"""
+
 import streamlit as st
 from i2 import Sig
 from dagapp.utils import (

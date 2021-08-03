@@ -18,7 +18,6 @@ DFLT_ANNOT_ARGTYPE_MAP = {
     dict: "dict",
 }
 
-
 ARG_WIDGET_MAP = {
     "num": st.number_input,
     "slider": st.slider,

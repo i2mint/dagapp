@@ -9,7 +9,10 @@ To install:	```pip install dagapp```
 
 Enough theory. Here's how it works...
 
-### First make a DAG
+
+### A simple example
+
+#### First make a DAG
 
 ```python
 from meshed.dag import DAG
@@ -28,7 +31,7 @@ def result(b, d):
 dag = DAG((b, d, result))
 ```
 
-### Then make an app
+#### Then make an app
 
 ```python
 from dagapp.base import dag_app
@@ -41,13 +44,13 @@ if __name__ == "__main__":
     app()
 ```
 
-### Then run the app
+#### Then run the app
 
 ```
 >>> streamlit run example.py
 ```
 
-### ... and this is what you get
+#### ... and this is what you get
 
 ![png](docs/images/simple_example.png)
 

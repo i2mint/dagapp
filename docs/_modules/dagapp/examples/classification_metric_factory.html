@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dagapp.examples.classification_metric_factory &#8212; dagapp 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dagapp.examples.classification_metric_factory</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A dagapp to make binary classifier metrics&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="kn">from</span> <span class="nn">meshed.dag</span> <span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span> <span class="nn">dagapp.base</span> <span class="kn">import</span> <span class="n">dag_app</span>
+
+
+<span class="k">def</span> <span class="nf">_aligned_items</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yield (k, a_value, b_value) triples for all k that are both a key of a and of b&quot;&quot;&quot;</span>
+    <span class="c1"># reason for casting to dict is to make sure things like pd.Series use the right</span>
+    <span class="c1"># keys.</span>
+    <span class="c1"># could also use k in a.keys() etc. to solve this.</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_dot_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; _dot_product({&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}, {&#39;b&#39;: 4, &#39;c&#39;: -1, &#39;d&#39;: &#39;whatever&#39;})</span>
+<span class="sd">    5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ak</span> <span class="o">*</span> <span class="n">bk</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">ak</span><span class="p">,</span> <span class="n">bk</span> <span class="ow">in</span> <span class="n">_aligned_items</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="classifier_score"><a class="viewcode-back" href="../../../module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.classifier_score">[docs]</a><span class="k">def</span> <span class="nf">classifier_score</span><span class="p">(</span>
+    <span class="n">confusion_count</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">confusion_value</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute a score for a classifier that produced the `confusion_count`, based on</span>
+<span class="sd">    the given `confusion_value`.</span>
+<span class="sd">    Meant to be curried by fixing the confusion_value dict.</span>
+
+<span class="sd">    The function is purposely general -- it is not specific to binary classifier</span>
+<span class="sd">    outcomes, or even any classifier outcomes.</span>
+<span class="sd">    It simply computes a normalized dot product, depending on the inputs keys to align</span>
+<span class="sd">    values to multiply and</span>
+<span class="sd">    considering a missing key as an expression of a null value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_dot_product</span><span class="p">(</span><span class="n">confusion_count</span><span class="p">,</span> <span class="n">confusion_value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">confusion_count</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="confusion_count"><a class="viewcode-back" href="../../../module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.confusion_count">[docs]</a><span class="k">def</span> <span class="nf">confusion_count</span><span class="p">(</span><span class="n">prediction</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">truth</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">positive</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a dict containing the counts of all combinations of prediction and</span>
+<span class="sd">    corresponding truth values.</span>
+
+<span class="sd">    &gt;&gt;&gt; confusion_count(</span>
+<span class="sd">    ... [0, 0, 1, 0, 1, 1, 1],</span>
+<span class="sd">    ... [0, 0, 0, 1, 1, 1, 1]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    {&#39;tn&#39;: 2, &#39;fp&#39;: 1, &#39;fn&#39;: 1, &#39;tp&#39;: 3}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">confusion</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">truth</span><span class="p">)))</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">confusion</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">positive</span><span class="p">:</span>
+                <span class="n">confusion</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">confusion</span><span class="p">[</span><span class="s1">&#39;tn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">positive</span><span class="p">:</span>
+                <span class="n">confusion</span><span class="p">[</span><span class="s1">&#39;fn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">confusion</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span> <span class="s1">&#39;tn&#39;</span><span class="p">,</span> <span class="s1">&#39;fn&#39;</span><span class="p">,</span> <span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">confusion</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">confusion</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">confusion</span></div>
+
+
+<div class="viewcode-block" id="prediction"><a class="viewcode-back" href="../../../module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.prediction">[docs]</a><span class="k">def</span> <span class="nf">prediction</span><span class="p">(</span><span class="n">predict_proba</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get an array of predictions from thresholding the scores of predict_proba array.</span>
+
+<span class="sd">    &gt;&gt;&gt; prediction([0.3, 0.4, 0.5, 0.6, 0.7, 0.8], threshold=0.5)</span>
+<span class="sd">    array([False, False,  True,  True,  True,  True])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predict_proba</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">threshold</span></div>
+
+
+<div class="viewcode-block" id="predict_proba"><a class="viewcode-back" href="../../../module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.predict_proba">[docs]</a><span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_X</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the prediction_proba scores of a model given some test data&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">test_X</span><span class="p">)</span></div>
+
+
+<span class="n">dags</span> <span class="o">=</span> <span class="p">[</span><span class="n">DAG</span><span class="p">((</span><span class="n">confusion_count</span><span class="p">,</span> <span class="n">classifier_score</span><span class="p">))]</span>
+<span class="n">configs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arg_types</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">prediction</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">truth</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="n">confusion_value</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="n">dags</span><span class="p">,</span> <span class="n">configs</span><span class="o">=</span><span class="n">configs</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">dagapp</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp.html">dagapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/base.html">dagapp.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/utils.html">dagapp.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;NO COPYRIGHT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

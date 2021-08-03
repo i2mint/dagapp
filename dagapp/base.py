@@ -6,7 +6,7 @@ from dagapp.page_funcs import SimplePageFunc
 
 
 def dag_to_page_name(dag):
-    return f"{list(dag.leafs)[0].capitalize()} Calculator"
+    return f'{list(dag.leafs)[0].capitalize()} Calculator'
 
 
 def get_page_callbacks(dags, page_names, page_factory, configs):
@@ -32,7 +32,7 @@ def dag_app(dags, page_factory=SimplePageFunc, configs=None):
 
     pages = get_pages_specs(dags, page_factory, configs)
 
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Select your page", tuple(pages.keys()))
+    st.sidebar.title('Navigation')
+    page = st.sidebar.radio('Select your page', tuple(pages.keys()))
 
     pages[page]()

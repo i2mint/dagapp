@@ -13,7 +13,7 @@ from dagapp.utils import (
 
 
 class BasePageFunc:
-    def __init__(self, dag, page_title: str = "", **config):
+    def __init__(self, dag, page_title: str = '', **config):
         self.dag = dag
         self.page_title = page_title
         self.sig = Sig(dag)
@@ -21,14 +21,14 @@ class BasePageFunc:
 
     def __call__(self):
         if self.page_title:
-            st.markdown(f"""## **{self.page_title}**""")
+            st.markdown(f'''## **{self.page_title}**''')
         st.write(Sig(self.dag))
 
 
 class SimplePageFunc(BasePageFunc):
     def __call__(self):
         if self.page_title:
-            st.markdown(f"""## **{self.page_title}**""")
+            st.markdown(f'''## **{self.page_title}**''')
 
         c1, c2 = st.beta_columns(2)
 
@@ -45,7 +45,7 @@ class SimplePageFunc(BasePageFunc):
 class StaticPageFunc(BasePageFunc):
     def __call__(self):
         if self.page_title:
-            st.markdown(f"""## **{self.page_title}**""")
+            st.markdown(f'''## **{self.page_title}**''')
 
         c1, c2 = st.beta_columns(2)
 

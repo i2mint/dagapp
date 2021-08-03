@@ -62,17 +62,17 @@ def confusion_count(prediction: Iterable[int], truth: Iterable[int], positive: i
     for key in keys:
         if key[0] == key[1]:
             if key[1] == positive:
-                confusion["tp"] = confusion[key]
+                confusion['tp'] = confusion[key]
             else:
-                confusion["tn"] = confusion[key]
+                confusion['tn'] = confusion[key]
         else:
             if key[1] == positive:
-                confusion["fn"] = confusion[key]
+                confusion['fn'] = confusion[key]
             else:
-                confusion["fp"] = confusion[key]
+                confusion['fp'] = confusion[key]
         del confusion[key]
 
-    keys = [key for key in ["tp", "tn", "fn", "fp"] if key not in confusion.keys()]
+    keys = [key for key in ['tp', 'tn', 'fn', 'fp'] if key not in confusion.keys()]
     for key in keys:
         confusion[key] = 0
 
@@ -97,14 +97,11 @@ dags = [DAG((confusion_count, classifier_score))]
 configs = [
     dict(
         arg_types=dict(
-            prediction="list",
-            truth="list",
-            positive="num",
-            confusion_value="dict",
+            prediction='list', truth='list', positive='num', confusion_value='dict',
         ),
     )
 ]
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = partial(dag_app, dags=dags, configs=configs)
     app()

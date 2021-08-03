@@ -44,19 +44,16 @@ dags = [
 configs = [
     dict(
         arg_types=dict(
-            a="num",
-            b="num",
-            cost_per_click="num",
-            revenue_per_click="num",
+            a='num', b='num', cost_per_click='num', revenue_per_click='num',
         ),
     ),
     dict(
         arg_types=dict(
-            max_partners="slider",
-            cost_per_click="slider",
-            price_elasticity="slider",
-            partners="slider",
-            clicks_per_partner="slider",
+            max_partners='slider',
+            cost_per_click='slider',
+            price_elasticity='slider',
+            partners='slider',
+            clicks_per_partner='slider',
         ),
         ranges=dict(
             max_partners=[0, 2000],
@@ -70,6 +67,6 @@ configs = [
     ),
 ]
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = partial(dag_app, dags=dags, page_factory=StaticPageFunc, configs=configs)
     app()

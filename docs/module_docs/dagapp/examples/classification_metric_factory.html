@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>dagapp.examples.classification_metric_factory &#8212; dagapp 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="dagapp.examples.configs_example" href="configs_example.html" />
+    <link rel="prev" title="dagapp.base" href="../base.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-dagapp.examples.classification_metric_factory">
+<span id="dagapp-examples-classification-metric-factory"></span><h1>dagapp.examples.classification_metric_factory<a class="headerlink" href="#module-dagapp.examples.classification_metric_factory" title="Permalink to this headline">¶</a></h1>
+<p>A dagapp to make binary classifier metrics</p>
+<dl class="py function">
+<dt id="dagapp.examples.classification_metric_factory.classifier_score">
+<code class="sig-prename descclassname">dagapp.examples.classification_metric_factory.</code><code class="sig-name descname">classifier_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">confusion_count</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">confusion_value</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dagapp/examples/classification_metric_factory.html#classifier_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.examples.classification_metric_factory.classifier_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a score for a classifier that produced the <cite>confusion_count</cite>, based on
+the given <cite>confusion_value</cite>.
+Meant to be curried by fixing the confusion_value dict.</p>
+<p>The function is purposely general – it is not specific to binary classifier
+outcomes, or even any classifier outcomes.
+It simply computes a normalized dot product, depending on the inputs keys to align
+values to multiply and
+considering a missing key as an expression of a null value.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.examples.classification_metric_factory.confusion_count">
+<code class="sig-prename descclassname">dagapp.examples.classification_metric_factory.</code><code class="sig-name descname">confusion_count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prediction</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">truth</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">positive</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dagapp/examples/classification_metric_factory.html#confusion_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.examples.classification_metric_factory.confusion_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a dict containing the counts of all combinations of prediction and
+corresponding truth values.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">confusion_count</span><span class="p">(</span>
+<span class="gp">... </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;tn&#39;: 2, &#39;fp&#39;: 1, &#39;fn&#39;: 1, &#39;tp&#39;: 3}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.examples.classification_metric_factory.predict_proba">
+<code class="sig-prename descclassname">dagapp.examples.classification_metric_factory.</code><code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">test_X</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dagapp/examples/classification_metric_factory.html#predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.examples.classification_metric_factory.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the prediction_proba scores of a model given some test data</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.examples.classification_metric_factory.prediction">
+<code class="sig-prename descclassname">dagapp.examples.classification_metric_factory.</code><code class="sig-name descname">prediction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict_proba</span></em>, <em class="sig-param"><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dagapp/examples/classification_metric_factory.html#prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.examples.classification_metric_factory.prediction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an array of predictions from thresholding the scores of predict_proba array.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">array([False, False,  True,  True,  True,  True])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">dagapp</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dagapp.html">dagapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">dagapp.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dagapp.examples.classification_metric_factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_example.html">dagapp.examples.simple_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../page_funcs.html">dagapp.page_funcs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">dagapp.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../base.html" title="previous chapter">dagapp.base</a></li>
+      <li>Next: <a href="configs_example.html" title="next chapter">dagapp.examples.configs_example</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;NO COPYRIGHT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/module_docs/dagapp/examples/classification_metric_factory.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

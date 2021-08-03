@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
 #### ... and this is what you get
 
-![png](docs/images/simple_example.png)
+![png](https://github.com/i2mint/dagapp/blob/master/docs/images/simple_example.png?raw=true)
 
 
 ### A more complicated example
@@ -120,5 +120,5 @@ if __name__ == "__main__":
 
 #### ... and this is what you get
 
-![png](docs/images/configs_example_1.png)
-![png](docs/images/configs_example_2.png)
+![png](https://github.com/i2mint/dagapp/blob/master/docs/images/configs_example_1.png?raw=true)
+![png](https://github.com/i2mint/dagapp/blob/master/docs/images/configs_example_2.png?raw=true)

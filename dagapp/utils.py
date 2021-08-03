@@ -1,5 +1,6 @@
 """Utils"""
-
+import numpy as np
+import pandas as pd
 import streamlit as st
 from typing import Mapping, Iterable
 from meshed.itools import successors
@@ -26,6 +27,55 @@ ARG_WIDGET_MAP = {
     "list": st.text_input,
     "dict": st.beta_expander,
 }
+
+
+# ------------------------------------ VECTORIZATION  ------------------------------------
+
+
+def double_slider(node, st_kwargs, col):
+    with col:
+        with st.beta_expander(node):
+            st.slider(
+                "min_val",
+                min_value=0,
+                max_value=100,
+                value=25,
+                key=f"{node}_min_val",
+                **st_kwargs,
+            )
+            st.slider(
+                "max_val",
+                min_value=st.session_state[f"{node}_min_val"],
+                max_value=100,
+                value=75,
+                key=f"{node}_max_val",
+                **st_kwargs,
+            )
+            st.number_input("step", value=5, key=f"{node}_step", **st_kwargs)
+            st.write(
+                pd.DataFrame(
+                    np.arange(
+                        start=int(st.session_state[f"{node}_min_val"]),
+                        stop=int(st.session_state[f"{node}_max_val"]),
+                        step=int(st.session_state[f"{node}_step"]),
+                    )
+                ).transpose()
+            )
+
+
+def vector_factory(dag, nodes, funcs, col):
+    with col:
+        for node in dag.sig.names:
+            st_kwargs = dict(
+                on_change=update_vec_nodes,
+                args=(dag, nodes, funcs, col),
+            )
+            double_slider(node, st_kwargs, col)
+
+
+def update_vec_nodes(dag, nodes, funcs, col):
+    with col:
+        st.write(dict(st.session_state))
 
 
 # ------------------------------------ BINARY CLASSIFICATION ------------------------------------

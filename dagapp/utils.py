@@ -36,28 +36,28 @@ def double_slider(node, st_kwargs, col):
     with col:
         with st.beta_expander(node):
             st.slider(
-                "min_val",
+                'min_val',
                 min_value=0,
                 max_value=100,
                 value=25,
-                key=f"{node}_min_val",
+                key=f'{node}_min_val',
                 **st_kwargs,
             )
             st.slider(
-                "max_val",
-                min_value=st.session_state[f"{node}_min_val"],
+                'max_val',
+                min_value=st.session_state[f'{node}_min_val'],
                 max_value=100,
                 value=75,
-                key=f"{node}_max_val",
+                key=f'{node}_max_val',
                 **st_kwargs,
             )
-            st.number_input("step", value=5, key=f"{node}_step", **st_kwargs)
+            st.number_input('step', value=5, key=f'{node}_step', **st_kwargs)
             st.write(
                 pd.DataFrame(
                     np.arange(
-                        start=int(st.session_state[f"{node}_min_val"]),
-                        stop=int(st.session_state[f"{node}_max_val"]),
-                        step=int(st.session_state[f"{node}_step"]),
+                        start=int(st.session_state[f'{node}_min_val']),
+                        stop=int(st.session_state[f'{node}_max_val']),
+                        step=int(st.session_state[f'{node}_step']),
                     )
                 ).transpose()
             )
@@ -66,10 +66,7 @@ def double_slider(node, st_kwargs, col):
 def vector_factory(dag, nodes, funcs, col):
     with col:
         for node in dag.sig.names:
-            st_kwargs = dict(
-                on_change=update_vec_nodes,
-                args=(dag, nodes, funcs, col),
-            )
+            st_kwargs = dict(on_change=update_vec_nodes, args=(dag, nodes, funcs, col),)
             double_slider(node, st_kwargs, col)
 
 

@@ -23,7 +23,7 @@ def _aligned_items(a, b):
 
 def _dot_product(a, b):
     """
-    >>> dot_product({'a': 1, 'b': 2, 'c': 3}, {'b': 4, 'c': -1, 'd': 'whatever'})
+    >>> _dot_product({'a': 1, 'b': 2, 'c': 3}, {'b': 4, 'c': -1, 'd': 'whatever'})
     5
     """
     return sum(ak * bk for _, ak, bk in _aligned_items(a, b))

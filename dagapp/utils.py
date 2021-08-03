@@ -1,7 +1,7 @@
 """Utils"""
 
 import streamlit as st
-from typing import Mapping, Iterable, Any
+from typing import Mapping, Iterable
 
 DFLT_VALS = {
     int: 0,
@@ -10,16 +10,19 @@ DFLT_VALS = {
     Mapping[str, int]: dict(tp=0, fn=0, fp=0, tn=0),
 }
 
-WIDGET_TYPE = {
-    "num": st.number_input,
-    "slider": st.slider,
-    "string": st.text_input,
-    "dict": st.text_input,
+DFLT_ANNOT_ARGTYPE_MAP = {
+    int: "num",
+    float: "num",
+    str: "text",
+    list: "list",
+    dict: "dict",
 }
+
 
 ARG_WIDGET_MAP = {
     "num": st.number_input,
     "slider": st.slider,
+    "text": st.text_input,
     "list": st.text_input,
     "dict": st.beta_expander,
 }
@@ -33,7 +36,10 @@ def update_static_nodes(dag, nodes, funcs, col):
         for node in [node for node in nodes if node not in dag.roots]:
             kwargs = dict()
             for arg in list(funcs[node].sig.names):
-                arg_type = str(funcs[node].sig.annotations[arg])
+                if arg in funcs[node].sig.annotations:
+                    arg_type = str(funcs[node].sig.annotations[arg])
+                else:
+                    arg_type = str(float)
                 if "typing.Iterable" in arg_type:
                     kwargs[arg] = [int(num) for num in st.session_state[arg].split(",")]
                 elif "typing.Mapping" in arg_type:
@@ -57,7 +63,7 @@ def update_static_nodes(dag, nodes, funcs, col):
                 st.write(f"{node}: {st.session_state[node]}")
 
 
-def binary_classification_factory(dag, nodes, funcs, values, arg_types, col):
+def static_factory(dag, nodes, funcs, values, arg_types, ranges, col):
     with col:
         for node in dag.sig.names:
             st_kwargs = dict(
@@ -72,6 +78,10 @@ def binary_classification_factory(dag, nodes, funcs, values, arg_types, col):
                         st_kwargs["value"] = values[node][condition]
                         st_kwargs["key"] = f"{node}_{condition}"
                         st.number_input(condition, **st_kwargs)
+            elif arg_types[node] == "slider":
+                st_kwargs["min_value"] = ranges[node][0]
+                st_kwargs["max_value"] = ranges[node][1]
+                st.slider(node, **st_kwargs)
             else:
                 widget = ARG_WIDGET_MAP[arg_types[node]]
                 widget(node, **st_kwargs)
@@ -80,7 +90,13 @@ def binary_classification_factory(dag, nodes, funcs, values, arg_types, col):
 # ------------------------------------ STANDARD UTILS ------------------------------------
 
 
-def display_factory(dag, nodes, funcs, values, slider, ranges, col):
+def get_from_configs(configs):
+    arg_types = configs["arg_types"]
+    ranges = None if "ranges" not in configs else configs["ranges"]
+    return arg_types, ranges
+
+
+def display_factory(dag, nodes, funcs, values, arg_types, ranges, col):
     with col:
         for node in nodes:
             st_kwargs = dict(
@@ -89,10 +105,13 @@ def display_factory(dag, nodes, funcs, values, slider, ranges, col):
                 args=(dag, funcs),
                 key=node,
             )
-            if slider:
-                st_kwargs["min_value"] = ranges[node][0]
-                st_kwargs["max_value"] = ranges[node][1]
-                st.slider(node, *st_kwargs)
+            if node in arg_types:
+                if arg_types[node] == "slider":
+                    st_kwargs["min_value"] = ranges[node][0]
+                    st_kwargs["max_value"] = ranges[node][1]
+                    st.slider(node, *st_kwargs)
+                else:
+                    st.number_input(node, **st_kwargs)
             else:
                 st.number_input(node, **st_kwargs)
 
@@ -142,26 +161,38 @@ def get_funcs(dag):
     return funcs
 
 
+def get_default_configs(dags):
+    configs = []
+    for dag in dags:
+        config = {"arg_types": {}}
+        for node in dag.roots:
+            if node in dag.sig.annotations:
+                config["arg_types"][node] = DFLT_ANNOT_ARGTYPE_MAP[
+                    dag.sig.annotations[node]
+                ]
+            else:
+                config["arg_types"][node] = "num"
+        configs.append(config)
+    return configs
+
+
 def check_configs(dags, configs):
     if len(configs) != len(dags):
         st_error("You need to define configs for all of your DAGs!")
 
     for dag, config in zip(dags, configs):
-        if "slider" not in config:
-            st_error(
-                "You need to define if you want slider or number input in your configs!"
-            )
-        elif config["slider"]:
-            if "ranges" not in config:
-                st_error("You need to define your slider ranges if you want sliders!")
-            else:
-                if not isinstance(config["ranges"], dict):
+        if "arg_types" not in config:
+            st_error("You need to define an argument type for your root nodes!")
+        else:
+            if len("arg_types") < len(dag.roots):
+                st_error(
+                    "You need to define an argument type for all of your root nodes!"
+                )
+
+            if "slider" in config["arg_types"]:
+                if "ranges" not in config:
                     st_error(
-                        "You need to define your slider ranges as a dictionary of two-element lists!"
-                    )
-                elif not set(get_nodes(dag)).issubset(set(config["ranges"].keys())):
-                    st_error(
-                        "You need to define a slider range for every component of your DAG!"
+                        "You need to define slider ranges if you want to set slider as an argument type!"
                     )
 
 

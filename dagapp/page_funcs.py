@@ -5,7 +5,8 @@ from dagapp.utils import (
     get_funcs,
     get_nodes,
     display_factory,
-    binary_classification_factory,
+    get_from_configs,
+    static_factory,
 )
 
 
@@ -34,15 +35,12 @@ class SimplePageFunc(BasePageFunc):
         funcs = get_funcs(self.dag)
         nodes = get_nodes(self.dag)
         values = get_values(self.dag, funcs)
+        arg_types, ranges = get_from_configs(self.configs)
 
-        if self.configs["slider"]:
-            ranges = self.configs["ranges"]
-            display_factory(self.dag, nodes, funcs, values, True, ranges, c1)
-        else:
-            display_factory(self.dag, nodes, funcs, values, False, None, c1)
+        display_factory(self.dag, nodes, funcs, values, arg_types, ranges, c1)
 
 
-class BinaryClassificationPageFunc(BasePageFunc):
+class StaticPageFunc(BasePageFunc):
     def __call__(self):
         if self.page_title:
             st.markdown(f"""## **{self.page_title}**""")
@@ -53,6 +51,6 @@ class BinaryClassificationPageFunc(BasePageFunc):
         funcs = get_funcs(self.dag)
         nodes = get_nodes(self.dag)
         values = get_values(self.dag, funcs)
-        arg_types = self.configs["arg_types"]
+        arg_types, ranges = get_from_configs(self.configs)
 
-        binary_classification_factory(self.dag, nodes, funcs, values, arg_types, c1)
+        static_factory(self.dag, nodes, funcs, values, arg_types, ranges, c1)

@@ -1,7 +1,7 @@
 """The base components for making apps from DAGs"""
 
 import streamlit as st
-from dagapp.utils import check_configs
+from dagapp.utils import check_configs, get_default_configs
 from dagapp.page_funcs import SimplePageFunc
 
 
@@ -22,11 +22,11 @@ def get_pages_specs(dags, page_factory, configs):
     return dict(zip(page_names, page_callbacks))
 
 
-def dag_app(dags, configs=None, page_factory=SimplePageFunc):
+def dag_app(dags, page_factory=SimplePageFunc, configs=None):
     if configs is None:
-        configs = [{"slider": False} for _ in range(len(dags))]
+        configs = get_default_configs(dags)
 
-    # check_configs(dags, configs)
+    check_configs(dags, configs)
 
     # st.set_page_config(layout="wide")
 

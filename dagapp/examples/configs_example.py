@@ -3,6 +3,7 @@
 from dagapp.base import dag_app
 from meshed.dag import DAG
 from functools import partial
+from dagapp.page_funcs import StaticPageFunc
 
 
 def partners(
@@ -41,21 +42,34 @@ dags = [
 ]
 
 configs = [
-    dict(slider=False),
     dict(
-        slider=True,
+        arg_types=dict(
+            a="num",
+            b="num",
+            cost_per_click="num",
+            revenue_per_click="num",
+        ),
+    ),
+    dict(
+        arg_types=dict(
+            max_partners="slider",
+            cost_per_click="slider",
+            price_elasticity="slider",
+            partners="slider",
+            clicks_per_partner="slider",
+        ),
         ranges=dict(
             max_partners=[0, 2000],
             cost_per_click=[0.0, 1.0],
             price_elasticity=[0, 200],
             partners=[0, 1500],
             clicks_per_partner=[0.0, 10.0],
-            clicks=[0, 100000],
-            revenue=[0.0, 1000000.0],
+            # clicks=[0, 100000],
+            # revenue=[0.0, 1000000.0],
         ),
     ),
 ]
 
 if __name__ == "__main__":
-    app = partial(dag_app, dags=dags, configs=configs)
+    app = partial(dag_app, dags=dags, page_factory=StaticPageFunc, configs=configs)
     app()

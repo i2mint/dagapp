@@ -3,11 +3,10 @@
 from collections import Counter
 import numpy as np
 from functools import partial
-from typing import Mapping, Iterable, Any
+from typing import Mapping, Iterable
 
 from meshed.dag import DAG
 from dagapp.base import dag_app
-from dagapp.page_funcs import BinaryClassificationPageFunc
 
 
 def _aligned_items(a, b):
@@ -102,14 +101,10 @@ configs = [
             truth="list",
             positive="num",
             confusion_value="dict",
-            confusion_count="dict",
-            classifier_score="num",
         ),
     )
 ]
 
 if __name__ == "__main__":
-    app = partial(
-        dag_app, dags=dags, configs=configs, page_factory=BinaryClassificationPageFunc
-    )
+    app = partial(dag_app, dags=dags, configs=configs)
     app()

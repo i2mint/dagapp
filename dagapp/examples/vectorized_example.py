@@ -20,6 +20,6 @@ def result(b: int, d: int):
 
 dags = [DAG([b, d, result])]
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = partial(dag_app, dags=dags, page_factory=VectorizePageFunc)
     app()

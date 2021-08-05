@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>dagapp.utils &#8212; dagapp 0.1.4 documentation</title>
+    <title>dagapp.utils &#8212; dagapp 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -37,6 +37,138 @@
   <section id="module-dagapp.utils">
 <span id="dagapp-utils"></span><h1>dagapp.utils<a class="headerlink" href="#module-dagapp.utils" title="Permalink to this headline">¶</a></h1>
 <p>Utils</p>
+<dl class="py function">
+<dt id="dagapp.utils.check_configs">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">check_configs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dags</span></em>, <em class="sig-param"><span class="n">configs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#check_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.check_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the user defined configs to prevent errors</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.display_factory">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">display_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">arg_types</span></em>, <em class="sig-param"><span class="n">ranges</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#display_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.display_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the nodes of a dag with number of slider inputs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.display_node">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">display_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">arg_types</span></em>, <em class="sig-param"><span class="n">ranges</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">st_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#display_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.display_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the given node based on the argument type</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.display_vec_node">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">display_vec_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#display_vec_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.display_vec_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays a non-root-node for vectorized input</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_args">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the arguments for a vectorized FuncNode</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_default_configs">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_default_configs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dags</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_default_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_default_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns default configs based on dags if the user did not provide them</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_from_configs">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_from_configs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">configs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_from_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_from_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains information from user defined configs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_func_values">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_func_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">defaults</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_func_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_func_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default values for all the FuncNodes in funcs using the root defaults in defaults</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_funcs">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_funcs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of all the FuncNodes found in dag</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_kwargs">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_kwargs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get keyword arguments for a FuncNode</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_nodes">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of all nodes found in dag</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_root_values">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_root_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_root_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_root_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default values for all the root nodes found in dag</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_values">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns default values for all the nodes found in dag</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.get_vec_input">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">get_vec_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#get_vec_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.get_vec_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a vectorized input defined by a double slider</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.mk_double_slider">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">mk_double_slider</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">st_kwargs</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#mk_double_slider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.mk_double_slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a double slider for a given node</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.reload_nodes">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">reload_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#reload_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.reload_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates all nodes based on the values of the root nodes</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.st_error">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">st_error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#st_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.st_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a streamlit error with the given message</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.static_factory">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">static_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">arg_types</span></em>, <em class="sig-param"><span class="n">ranges</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#static_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.static_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the root nodes of a dag</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.update_nodes">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">update_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">node_ch</span></em>, <em class="sig-param"><span class="n">funcs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#update_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.update_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates successors of a changed node</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.update_static_nodes">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">update_static_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#update_static_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.update_static_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the non-root nodes for a static DAG factory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.update_vec_nodes">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">update_vec_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#update_vec_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.update_vec_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update non root-nodes for vectorized DAG factory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dagapp.utils.vector_factory">
+<code class="sig-prename descclassname">dagapp.utils.</code><code class="sig-name descname">vector_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dag</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dagapp/utils.html#vector_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dagapp.utils.vector_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the root nodes of a vectorized DAG as double sliders</p>
+</dd></dl>
+
 </section>
 
 

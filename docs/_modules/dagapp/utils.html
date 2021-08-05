@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dagapp.utils &#8212; dagapp 0.1.5 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dagapp.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utils&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">streamlit</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">meshed.itools</span> <span class="kn">import</span> <span class="n">successors</span>
+<span class="kn">from</span> <span class="nn">lined</span> <span class="kn">import</span> <span class="n">iterize</span>
+
+<span class="n">DFLT_VALS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">int</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nb">float</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span> <span class="s1">&#39;0,0,0,0&#39;</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tn</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">DFLT_ANNOT_ARGTYPE_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">int</span><span class="p">:</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span>
+    <span class="nb">float</span><span class="p">:</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">:</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span>
+    <span class="nb">list</span><span class="p">:</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span>
+    <span class="nb">dict</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">ARG_TYPE_WIDGET_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;num&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">,</span>
+    <span class="s1">&#39;slider&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">,</span>
+    <span class="s1">&#39;double_slider&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">beta_expander</span><span class="p">,</span>
+    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
+    <span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
+    <span class="s1">&#39;dict&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">beta_expander</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ------------------------------------ VECTORIZATION  ------------------------------------</span>
+
+
+<div class="viewcode-block" id="get_vec_input"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_vec_input">[docs]</a><span class="k">def</span> <span class="nf">get_vec_input</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a vectorized input defined by a double slider</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">stop</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_num&#39;</span><span class="p">]),</span>
+        <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_args"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_args">[docs]</a><span class="k">def</span> <span class="nf">get_args</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the arguments for a vectorized FuncNode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">:</span>
+            <span class="n">vec_input</span> <span class="o">=</span> <span class="n">get_vec_input</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+                <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">arg_type</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec_input</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec_input</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec_input</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+
+
+<div class="viewcode-block" id="display_vec_node"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.display_vec_node">[docs]</a><span class="k">def</span> <span class="nf">display_vec_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Displays a non-root-node for vectorized input</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">iterize</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">: &#39;</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="mk_double_slider"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.mk_double_slider">[docs]</a><span class="k">def</span> <span class="nf">mk_double_slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a double slider for a given node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">beta_expander</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span>
+                <span class="s1">&#39;vectorization range&#39;</span><span class="p">,</span>
+                <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">st_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span>
+                <span class="s1">&#39;num values&#39;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_num&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span>
+            <span class="p">)</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">get_vec_input</span><span class="p">(</span><span class="n">node</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="vector_factory"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.vector_factory">[docs]</a><span class="k">def</span> <span class="nf">vector_factory</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Displays the root nodes of a vectorized DAG as double sliders</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+            <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">on_change</span><span class="o">=</span><span class="n">update_vec_nodes</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">),)</span>
+            <span class="n">mk_double_slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_vec_nodes"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.update_vec_nodes">[docs]</a><span class="k">def</span> <span class="nf">update_vec_nodes</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update non root-nodes for vectorized DAG factory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">]:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">display_vec_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span></div>
+
+
+<span class="c1"># ------------------------------------ STATIC NODES ------------------------------------</span>
+
+
+<div class="viewcode-block" id="get_kwargs"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_kwargs">[docs]</a><span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get keyword arguments for a FuncNode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+            <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;typing.Iterable&#39;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="s1">&#39;typing.Mapping&#39;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">tp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_tp&#39;</span><span class="p">],</span>
+                <span class="n">fn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_fn&#39;</span><span class="p">],</span>
+                <span class="n">fp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_fp&#39;</span><span class="p">],</span>
+                <span class="n">tn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_tn&#39;</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">kwargs</span></div>
+
+
+<div class="viewcode-block" id="update_static_nodes"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.update_static_nodes">[docs]</a><span class="k">def</span> <span class="nf">update_static_nodes</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the non-root nodes for a static DAG factory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">]:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">beta_expander</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="static_factory"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.static_factory">[docs]</a><span class="k">def</span> <span class="nf">static_factory</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Displays the root nodes of a dag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+            <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+                <span class="n">on_change</span><span class="o">=</span><span class="n">update_static_nodes</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">display_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">)</span></div>
+
+
+<span class="c1"># ------------------------------------ INTERMEDIATE NODES ------------------------------------</span>
+
+
+<div class="viewcode-block" id="display_node"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.display_node">[docs]</a><span class="k">def</span> <span class="nf">display_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Displays the given node based on the argument type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">arg_types</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">](</span><span class="n">node</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="n">condition</span><span class="p">]</span>
+                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;slider&#39;</span><span class="p">:</span>
+            <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;min_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;max_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">*</span><span class="n">st_kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+            <span class="n">widget</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="display_factory"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.display_factory">[docs]</a><span class="k">def</span> <span class="nf">display_factory</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display the nodes of a dag with number of slider inputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+                <span class="n">on_change</span><span class="o">=</span><span class="n">update_nodes</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">display_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">)</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+            <span class="s1">&#39;Reload DAG from root nodes&#39;</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">reload_nodes</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reload_nodes"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.reload_nodes">[docs]</a><span class="k">def</span> <span class="nf">reload_nodes</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates all nodes based on the values of the root nodes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">var_nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">)]</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_nodes"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.update_nodes">[docs]</a><span class="k">def</span> <span class="nf">update_nodes</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">node_ch</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates successors of a changed node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sub_nodes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">successors</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">node_ch</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sub_nodes</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">)]</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+
+<span class="c1"># ------------------------------------ STANDARD UTILS ------------------------------------</span>
+
+
+<div class="viewcode-block" id="get_root_values"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_root_values">[docs]</a><span class="k">def</span> <span class="nf">get_root_values</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default values for all the root nodes found in dag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root_defaults</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
+            <span class="n">dflt</span> <span class="o">=</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">dflt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">root_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+            <span class="n">root_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_VALS</span><span class="p">[</span><span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">root_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">root_defaults</span></div>
+
+
+<div class="viewcode-block" id="get_func_values"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_func_values">[docs]</a><span class="k">def</span> <span class="nf">get_func_values</span><span class="p">(</span><span class="n">defaults</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default values for all the FuncNodes in funcs using the root defaults in defaults</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">func_defaults</span> <span class="o">=</span> <span class="n">defaults</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">:</span>
+        <span class="n">func_node</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">func_node</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">func_defaults</span><span class="o">.</span><span class="n">keys</span><span class="p">()))):</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">arg_name</span> <span class="ow">in</span> <span class="n">func_node</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">arg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func_defaults</span><span class="p">[</span><span class="n">arg_name</span><span class="p">]</span>
+            <span class="n">func_defaults</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func_node</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func_defaults</span></div>
+
+
+<div class="viewcode-block" id="get_values"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_values">[docs]</a><span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns default values for all the nodes found in dag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root_defaults</span> <span class="o">=</span> <span class="n">get_root_values</span><span class="p">(</span><span class="n">dag</span><span class="p">)</span>
+    <span class="n">func_defaults</span> <span class="o">=</span> <span class="n">get_func_values</span><span class="p">(</span><span class="n">root_defaults</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func_defaults</span></div>
+
+
+<div class="viewcode-block" id="get_nodes"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_nodes">[docs]</a><span class="k">def</span> <span class="nf">get_nodes</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the names of all nodes found in dag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span></div>
+
+
+<div class="viewcode-block" id="get_funcs"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_funcs">[docs]</a><span class="k">def</span> <span class="nf">get_funcs</span><span class="p">(</span><span class="n">dag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the names of all the FuncNodes found in dag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">func_node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">func_nodes</span><span class="p">:</span>
+        <span class="n">funcs</span><span class="p">[</span><span class="n">func_node</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">func_node</span>
+    <span class="k">return</span> <span class="n">funcs</span></div>
+
+
+<div class="viewcode-block" id="get_from_configs"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_from_configs">[docs]</a><span class="k">def</span> <span class="nf">get_from_configs</span><span class="p">(</span><span class="n">configs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Obtains information from user defined configs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arg_types</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">]</span>
+    <span class="n">ranges</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s1">&#39;ranges&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs</span> <span class="k">else</span> <span class="n">configs</span><span class="p">[</span><span class="s1">&#39;ranges&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span></div>
+
+
+<div class="viewcode-block" id="get_default_configs"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.get_default_configs">[docs]</a><span class="k">def</span> <span class="nf">get_default_configs</span><span class="p">(</span><span class="n">dags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns default configs based on dags if the user did not provide them</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">configs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dag</span> <span class="ow">in</span> <span class="n">dags</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg_types&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_ANNOT_ARGTYPE_MAP</span><span class="p">[</span>
+                    <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;num&#39;</span>
+        <span class="n">configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">configs</span></div>
+
+
+<div class="viewcode-block" id="check_configs"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.check_configs">[docs]</a><span class="k">def</span> <span class="nf">check_configs</span><span class="p">(</span><span class="n">dags</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks the user defined configs to prevent errors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">configs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dags</span><span class="p">):</span>
+        <span class="n">st_error</span><span class="p">(</span><span class="s1">&#39;You need to define configs for all of your DAGs!&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">dag</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dags</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;arg_types&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">st_error</span><span class="p">(</span><span class="s1">&#39;You need to define an argument type for your root nodes!&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="s1">&#39;arg_types&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">):</span>
+                <span class="n">st_error</span><span class="p">(</span>
+                    <span class="s1">&#39;You need to define an argument type for all of your root nodes!&#39;</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;slider&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s1">&#39;ranges&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+                    <span class="n">st_error</span><span class="p">(</span>
+                        <span class="s1">&#39;You need to define slider ranges if you want to set slider as an argument type!&#39;</span>
+                    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="st_error"><a class="viewcode-back" href="../../module_docs/dagapp/utils.html#dagapp.utils.st_error">[docs]</a><span class="k">def</span> <span class="nf">st_error</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raises a streamlit error with the given message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">dagapp</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp.html">dagapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/base.html">dagapp.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/utils.html">dagapp.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;NO COPYRIGHT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

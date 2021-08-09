@@ -200,6 +200,8 @@ def display_node(node, arg_types, ranges, values, st_kwargs):
             st_kwargs['min_value'] = ranges[node][0]
             st_kwargs['max_value'] = ranges[node][1]
             st.slider(node, *st_kwargs)
+        elif arg_types[node] in {'bool', bool}:
+            st.radio(**st_kwargs)
         else:
             widget = ARG_TYPE_WIDGET_MAP[arg_types[node]]
             widget(node, **st_kwargs)

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dagapp.utils &#8212; dagapp 0.1.5 documentation</title>
+    <title>dagapp.utils &#8212; dagapp 0.1.6 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -235,6 +235,8 @@
             <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;min_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;max_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">*</span><span class="n">st_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;bool&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">}:</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">radio</span><span class="p">(</span><span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">widget</span> <span class="o">=</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
             <span class="n">widget</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
@@ -427,6 +429,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/base.html">dagapp.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/infection.html">dagapp.examples.infection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>

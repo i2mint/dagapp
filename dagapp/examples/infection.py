@@ -9,7 +9,7 @@ DFLT_VAX = 0.5
 
 
 def _factor(vax, vax_factor):
-    assert 0 <= vax <= 1, "vax should be between 0 and 1: Was {vax}"
+    assert 0 <= vax <= 1, 'vax should be between 0 and 1: Was {vax}'
     return vax * vax_factor + (1 - vax)
 
 
@@ -48,20 +48,20 @@ dags = [
 
 from i2 import Sig
 
-num_fields = {*Sig(r).names, *Sig(infected).names, *Sig(die).names} - {"vax"}
+num_fields = {*Sig(r).names, *Sig(infected).names, *Sig(die).names} - {'vax'}
 
 configs = [
     dict(
         arg_types=dict(
-            infect_if_exposed="num",
-            infected="num",
-            die_if_infected="num",
-            death_vax_factor="num",
-            exposed="num",
-            vax="num",
-            infect_if_expose="num",
-            infection_vax_factor="num",
-            population="num",
+            infect_if_exposed='num',
+            infected='num',
+            die_if_infected='num',
+            death_vax_factor='num',
+            exposed='num',
+            vax='num',
+            infect_if_expose='num',
+            infection_vax_factor='num',
+            population='num',
         ),
     ),
     # dict(
@@ -88,6 +88,6 @@ configs = [
     # ),
 ]
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = partial(dag_app, dags=dags, page_factory=StaticPageFunc, configs=configs)
     app()

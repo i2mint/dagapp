@@ -1,46 +1,49 @@
-"""An example of making an app from DAGs with configs defined"""
+"""Simple model relating vaccination to death toll, involving exposure and infection rate
+                        ┌──────────────────────┐
+                        │   death_vax_factor   │
+                        └──────────────────────┘
+                          │
+                          ▼
+┌─────────────────┐     ┌──────────────────────────────────┐
+│ die_if_infected │ ──▶ │               die                │
+└─────────────────┘     └──────────────────────────────────┘
+                          │                       ▲    ▲
+                          ▼                       │    │
+┌─────────────────┐     ┌──────────────────────┐  │  ┌─────┐
+│   population    │ ──▶ │      death_toll      │  │  │ vax │
+└─────────────────┘     └──────────────────────┘  │  └─────┘
+                                                  │    │
+                        ┌──────────────────────┐  │    │
+                        │ infection_vax_factor │  │    │
+                        └──────────────────────┘  │    │
+                          │                       │    │
+                          ▼                       │    │
+                        ┌──────────────────────┐  │    │
+                     ┌▶ │       infected       │ ─┘    │
+                     │  └──────────────────────┘       │
+                     │    ▲                            │
+                     │    └────────────────────────────┘
+                     │  ┌──────────────────────┐
+                     │  │       exposed        │
+                     │  └──────────────────────┘
+                     │    │
+                     │    ▼
+                     │  ┌──────────────────────┐
+                     └─ │          r           │
+                        └──────────────────────┘
+                          ▲
+                          │
+                        ┌──────────────────────┐
+                        │   infect_if_expose   │
+                        └──────────────────────┘
+"""
 
-from dagapp.base import dag_app
 from meshed.dag import DAG
 from functools import partial
 from dagapp.page_funcs import StaticPageFunc
+from dagapp.base import dag_app
 
-DFLT_VAX = 0.5
-
-
-def _factor(vax, vax_factor):
-    assert 0 <= vax <= 1, 'vax should be between 0 and 1: Was {vax}'
-    return vax * vax_factor + (1 - vax)
-
-
-def r(exposed: float = 6, infect_if_expose: float = 1 / 5):
-    return exposed * infect_if_expose
-
-
-def infected(r: float = 1.2, vax: float = DFLT_VAX, infection_vax_factor: float = 0.15):
-    return r * _factor(vax, infection_vax_factor)
-
-
-def die(
-    infected: float,
-    die_if_infected: float = 0.05,
-    vax: float = DFLT_VAX,
-    death_vax_factor: float = 0.05,
-):
-    return infected * die_if_infected * _factor(vax, death_vax_factor)
-
-
-def death_toll(die: float, population: int = 1e6):
-    return int(die * population)
-
-
-# def infected(exposed=6, infect_if_exposed=1 / 5, vax=True, infection_vax_factor=0.15):
-#     return exposed * infect_if_exposed * _factor(vax, infection_vax_factor)
-#
-#
-# def die(infected, die_if_infected=0.05, vax=True, death_vax_factor=0.05):
-#     return infected * die_if_infected * _factor(vax, death_vax_factor)
-
+from meshed.examples.vaccine_vs_no_vaccine import *
 
 dags = [
     DAG((r, infected, die, death_toll)),

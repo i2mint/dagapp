@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>dagapp.examples.infection &#8212; dagapp 0.1.6 documentation</title>
+    <title>dagapp.examples.infection &#8212; dagapp 0.1.7 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -37,7 +37,62 @@
             
   <section id="module-dagapp.examples.infection">
 <span id="dagapp-examples-infection"></span><h1>dagapp.examples.infection<a class="headerlink" href="#module-dagapp.examples.infection" title="Permalink to this headline">¶</a></h1>
-<p>An example of making an app from DAGs with configs defined</p>
+<dl>
+<dt>Simple model relating vaccination to death toll, involving exposure and infection rate</dt><dd><p>┌──────────────────────┐
+│   death_vax_factor   │
+└──────────────────────┘</p>
+<blockquote>
+<div><p>│
+▼</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>┌─────────────────┐     ┌──────────────────────────────────┐
+│ die_if_infected │ ──▶ │               die                │
+└─────────────────┘     └──────────────────────────────────┘</p>
+<blockquote>
+<div><p>│                       ▲    ▲
+▼                       │    │</p>
+</div></blockquote>
+<p>┌─────────────────┐     ┌──────────────────────┐  │  ┌─────┐
+│   population    │ ──▶ │      death_toll      │  │  │ vax │
+└─────────────────┘     └──────────────────────┘  │  └─────┘</p>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>│    │</p>
+</div></blockquote>
+<p>┌──────────────────────┐  │    │
+│ infection_vax_factor │  │    │
+└──────────────────────┘  │    │</p>
+<blockquote>
+<div><p>│                       │    │
+▼                       │    │</p>
+</div></blockquote>
+<p>┌──────────────────────┐  │    │</p>
+</div></blockquote>
+<p>┌▶ │       infected       │ ─┘    │
+│  └──────────────────────┘       │
+│    ▲                            │
+│    └────────────────────────────┘
+│  ┌──────────────────────┐
+│  │       exposed        │
+│  └──────────────────────┘
+│    │
+│    ▼
+│  ┌──────────────────────┐
+└─ │          r           │</p>
+<blockquote>
+<div><dl class="simple">
+<dt>└──────────────────────┘</dt><dd><p>▲
+│</p>
+</dd>
+</dl>
+<p>┌──────────────────────┐
+│   infect_if_expose   │
+└──────────────────────┘</p>
+</div></blockquote>
+</div></blockquote>
 </section>
 
 

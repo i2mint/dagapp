@@ -24,10 +24,10 @@ DFLT_ANNOT_ARGTYPE_MAP = {
 ARG_TYPE_WIDGET_MAP = {
     'num': st.number_input,
     'slider': st.slider,
-    'double_slider': st.beta_expander,
+    'double_slider': st.expander,
     'text': st.text_input,
     'list': st.text_input,
-    'dict': st.beta_expander,
+    'dict': st.expander,
 }
 
 
@@ -83,7 +83,7 @@ def mk_double_slider(node, st_kwargs, col):
     Create a double slider for a given node
     """
     with col:
-        with st.beta_expander(node):
+        with st.expander(node):
             st.slider(
                 'vectorization range',
                 min_value=0,
@@ -159,7 +159,7 @@ def update_static_nodes(dag, nodes, funcs, col):
             if isinstance(val, dict):
                 for key in val.keys():
                     st.session_state[f'{node}_{key}'] = val[key]
-                with st.beta_expander(node):
+                with st.expander(node):
                     for key in val.keys():
                         st.write(f"{key}: {st.session_state[f'{node}_{key}']}")
             else:

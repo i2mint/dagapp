@@ -31,7 +31,7 @@ class SimplePageFunc(BasePageFunc):
         if self.page_title:
             st.markdown(f'''## **{self.page_title}**''')
 
-        c1, c2 = st.beta_columns(2)
+        c1, c2 = st.columns(2)
 
         c2.graphviz_chart(self.dag.dot_digraph())
 
@@ -48,7 +48,7 @@ class StaticPageFunc(BasePageFunc):
         if self.page_title:
             st.markdown(f'''## **{self.page_title}**''')
 
-        c1, c2 = st.beta_columns(2)
+        c1, c2 = st.columns(2)
 
         c2.graphviz_chart(self.dag.dot_digraph())
         funcs = get_funcs(self.dag)
@@ -64,7 +64,7 @@ class VectorizePageFunc(BasePageFunc):
         if self.page_title:
             st.markdown(f'''## **{self.page_title}**''')
 
-        c1, c2 = st.beta_columns(2)
+        c1, c2 = st.columns(2)
 
         c2.graphviz_chart(self.dag.dot_digraph())
         funcs = get_funcs(self.dag)

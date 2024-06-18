@@ -7,6 +7,11 @@ To install:	```pip install dagapp```
 
 [What's an app?](https://www.amazon.com/Life-Real-Dummies-Clueless-1996-10-03/dp/B01F81N4D0)
 
+This is a beautiful example of a DAG app woven into to an article: [rent-or-buy article+app](https://www.nytimes.com/interactive/2024/upshot/buy-rent-calculator.html)
+The app serves as an illustration of the article and the article as the documentation of the app.
+
+What `dagapp` wants to become is a framework to generate such effective communication, effortlessly. 
+
 Enough theory. Here's how it works...
 
 

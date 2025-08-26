@@ -1,1 +1,9 @@
-"""Various dagapp examples"""
+"""
+Various dagapp examples:
+
+- simple_example
+- configs_example
+- classification_metric_factory
+- infection
+- vectorized_example
+"""

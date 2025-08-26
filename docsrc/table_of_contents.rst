@@ -7,6 +7,7 @@
    module_docs/dagapp/examples
    module_docs/dagapp/examples/classification_metric_factory
    module_docs/dagapp/examples/configs_example
+   module_docs/dagapp/examples/consulting_fees
    module_docs/dagapp/examples/infection
    module_docs/dagapp/examples/simple_example
    module_docs/dagapp/examples/vectorized_example

@@ -39,24 +39,20 @@ def effective_day_rate(
 
 
 def effective_hourly_rate(
-    effective_day_rate: float,
-    hours_per_day: float = dflt.hours_per_day,
+    effective_day_rate: float, hours_per_day: float = dflt.hours_per_day,
 ) -> float:
     """Return the hourly equivalent of the effective day-rate."""
     return effective_day_rate / hours_per_day
 
 
-def committed_days(
-    tier: Literal["light", "regular", "deep"] = "regular",
-) -> float:
+def committed_days(tier: Literal['light', 'regular', 'deep'] = 'regular',) -> float:
     """Return default committed days/month for a named tier."""
-    mapping = {"light": 4.0, "regular": 8.0, "deep": 12.0}
+    mapping = {'light': 4.0, 'regular': 8.0, 'deep': 12.0}
     return mapping[tier]
 
 
 def base_fee_ex_vat(
-    effective_day_rate: float,
-    committed_days: float = dflt.committed_days,
+    effective_day_rate: float, committed_days: float = dflt.committed_days,
 ) -> float:
     """Return the base monthly fee (ex-VAT) for committed days."""
     return effective_day_rate * committed_days
@@ -74,26 +70,17 @@ def flex_fee_ex_vat(
     return effective_day_rate * ramp_up_days * flex_premium_pct
 
 
-def subtotal_ex_vat(
-    base_fee_ex_vat: float,
-    flex_fee_ex_vat: float = 0.0,
-) -> float:
+def subtotal_ex_vat(base_fee_ex_vat: float, flex_fee_ex_vat: float = 0.0,) -> float:
     """Return the subtotal (ex-VAT)."""
     return base_fee_ex_vat + flex_fee_ex_vat
 
 
-def vat_amount(
-    subtotal_ex_vat: float,
-    vat_rate: float = dflt.vat_rate,
-) -> float:
+def vat_amount(subtotal_ex_vat: float, vat_rate: float = dflt.vat_rate,) -> float:
     """Return the VAT amount."""
     return subtotal_ex_vat * vat_rate
 
 
-def total_incl_vat(
-    subtotal_ex_vat: float,
-    vat_amount: float,
-) -> float:
+def total_incl_vat(subtotal_ex_vat: float, vat_amount: float,) -> float:
     """Return the total including VAT."""
     return subtotal_ex_vat + vat_amount
 
@@ -111,7 +98,7 @@ def light_monthly_total_incl_vat(
 ) -> float:
     """Return total incl. VAT for the 'light' (4 d/mo) scenario."""
     d = effective_day_rate(retainer, ad_hoc_day_rate, retainer_day_rate)
-    base = base_fee_ex_vat(d, committed_days("light"))
+    base = base_fee_ex_vat(d, committed_days('light'))
     flex = flex_fee_ex_vat(d, ramp_up_days, flex_premium_pct)
     sub = subtotal_ex_vat(base, flex)
     vat = vat_amount(sub, vat_rate)
@@ -128,7 +115,7 @@ def regular_monthly_total_incl_vat(
 ) -> float:
     """Return total incl. VAT for the 'regular' (8 d/mo) scenario."""
     d = effective_day_rate(retainer, ad_hoc_day_rate, retainer_day_rate)
-    base = base_fee_ex_vat(d, committed_days("regular"))
+    base = base_fee_ex_vat(d, committed_days('regular'))
     flex = flex_fee_ex_vat(d, ramp_up_days, flex_premium_pct)
     sub = subtotal_ex_vat(base, flex)
     vat = vat_amount(sub, vat_rate)
@@ -145,7 +132,7 @@ def deep_monthly_total_incl_vat(
 ) -> float:
     """Return total incl. VAT for the 'deep' (12 d/mo) scenario."""
     d = effective_day_rate(retainer, ad_hoc_day_rate, retainer_day_rate)
-    base = base_fee_ex_vat(d, committed_days("deep"))
+    base = base_fee_ex_vat(d, committed_days('deep'))
     flex = flex_fee_ex_vat(d, ramp_up_days, flex_premium_pct)
     sub = subtotal_ex_vat(base, flex)
     vat = vat_amount(sub, vat_rate)
@@ -176,12 +163,12 @@ def monthly_totals(
     vat = vat_amount(sub, vat_rate)
     total = total_incl_vat(sub, vat)
     return {
-        "effective_day_rate": d,
-        "base_fee_ex_vat": base,
-        "flex_fee_ex_vat": flex,
-        "subtotal_ex_vat": sub,
-        "vat_amount": vat,
-        "total_incl_vat": total,
+        'effective_day_rate': d,
+        'base_fee_ex_vat': base,
+        'flex_fee_ex_vat': flex,
+        'subtotal_ex_vat': sub,
+        'vat_amount': vat,
+        'total_incl_vat': total,
     }
 
 
@@ -193,12 +180,12 @@ def get_dag():
         # "light_monthly_total_incl_vat": light_monthly_total_incl_vat,
         # "committed_days": committed_days,
         # "effective_hourly_rate": effective_hourly_rate,
-        "effective_day_rate": effective_day_rate,
-        "base_fee_ex_vat": base_fee_ex_vat,
-        "flex_fee_ex_vat": flex_fee_ex_vat,
-        "subtotal_ex_vat": subtotal_ex_vat,
-        "vat_amount": vat_amount,
-        "total_incl_vat": total_incl_vat,
+        'effective_day_rate': effective_day_rate,
+        'base_fee_ex_vat': base_fee_ex_vat,
+        'flex_fee_ex_vat': flex_fee_ex_vat,
+        'subtotal_ex_vat': subtotal_ex_vat,
+        'vat_amount': vat_amount,
+        'total_incl_vat': total_incl_vat,
     }
 
     dag = DAG(funcs.values())

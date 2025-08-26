@@ -4,6 +4,7 @@
 
    module_docs/dagapp
    module_docs/dagapp/base
+   module_docs/dagapp/examples
    module_docs/dagapp/examples/classification_metric_factory
    module_docs/dagapp/examples/configs_example
    module_docs/dagapp/examples/infection

@@ -1,4 +1,5 @@
 """Utils"""
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -104,7 +105,10 @@ def vector_factory(dag, nodes, funcs, col):
     """
     with col:
         for node in dag.sig.names:
-            st_kwargs = dict(on_change=update_vec_nodes, args=(dag, nodes, funcs, col),)
+            st_kwargs = dict(
+                on_change=update_vec_nodes,
+                args=(dag, nodes, funcs, col),
+            )
             mk_double_slider(node, st_kwargs, col)
 
 
@@ -199,7 +203,7 @@ def display_node(node, arg_types, ranges, values, st_kwargs):
         elif arg_types[node] == 'slider':
             st_kwargs['min_value'] = ranges[node][0]
             st_kwargs['max_value'] = ranges[node][1]
-            st.slider(node, *st_kwargs)
+            st.slider(node, **st_kwargs)
         elif arg_types[node] in {'bool', bool}:
             st.radio(**st_kwargs)
         else:

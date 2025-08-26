@@ -12,12 +12,14 @@ DFLT_VALS = {
     float: 0.0,
     Iterable[int]: '0,0,0,0',
     Mapping[str, int]: dict(tp=0, fn=0, fp=0, tn=0),
+    bool: False,
 }
 
 DFLT_ANNOT_ARGTYPE_MAP = {
     int: 'num',
     float: 'num',
     str: 'text',
+    bool: 'bool',
     list: 'list',
     dict: 'dict',
 }
@@ -105,7 +107,10 @@ def vector_factory(dag, nodes, funcs, col):
     """
     with col:
         for node in dag.sig.names:
-            st_kwargs = dict(on_change=update_vec_nodes, args=(dag, nodes, funcs, col),)
+            st_kwargs = dict(
+                on_change=update_vec_nodes,
+                args=(dag, nodes, funcs, col),
+            )
             mk_double_slider(node, st_kwargs, col)
 
 
@@ -201,8 +206,17 @@ def display_node(node, arg_types, ranges, values, st_kwargs):
             st_kwargs['min_value'] = ranges[node][0]
             st_kwargs['max_value'] = ranges[node][1]
             st.slider(node, **st_kwargs)
-        elif arg_types[node] in {'bool', bool}:
-            st.radio(**st_kwargs)
+        elif arg_types[node] == 'bool':
+            # streamlit.radio does not accept a 'value' kwarg; use checkbox
+            # for boolean inputs which supports 'value' and the same
+            # on_change/key/args parameters.
+            st.checkbox(
+                node,
+                value=values[node],
+                key=st_kwargs.get('key'),
+                on_change=st_kwargs.get('on_change'),
+                args=st_kwargs.get('args'),
+            )
         else:
             widget = ARG_TYPE_WIDGET_MAP[arg_types[node]]
             widget(node, **st_kwargs)

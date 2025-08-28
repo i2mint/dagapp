@@ -7,6 +7,9 @@ from typing import Mapping, Iterable
 from meshed.itools import successors
 from lined import iterize
 
+import inspect
+from inspect import Parameter
+
 DFLT_VALS = {
     int: 0,
     float: 0.0,
@@ -245,8 +248,7 @@ def reload_nodes(dag, funcs):
     """
     for node in dag.var_nodes:
         if node not in dag.roots:
-            args = [st.session_state[arg] for arg in list(funcs[node].sig.names)]
-            st.session_state[node] = funcs[node].func(*args)
+            st.session_state[node] = _compute_node_value(node, funcs)
 
 
 def update_nodes(dag, node_ch, funcs):
@@ -256,9 +258,44 @@ def update_nodes(dag, node_ch, funcs):
     sub_nodes = [
         node for node in list(successors(dag.graph, node_ch)) if isinstance(node, str)
     ]
+
     for node in sub_nodes:
-        args = [st.session_state[arg] for arg in list(funcs[node].sig.names)]
-        st.session_state[node] = funcs[node].func(*args)
+        st.session_state[node] = _compute_node_value(node, funcs)
+
+
+def _compute_node_value(node, funcs):
+    """
+    Compute the value for `node` by calling its function using positional
+    arguments for POSITIONAL_ONLY parameters and keyword arguments for the
+    remaining parameters. Values are taken from `st.session_state`.
+    """
+    func_node = funcs[node]
+    func = func_node.func
+    sig = inspect.signature(func)
+    args = []
+    kwargs = {}
+    for name, param in sig.parameters.items():
+        # If the parameter isn't present in session state but has a default,
+        # omit it so the function can use its default value.
+        if name not in st.session_state:
+            if param.default is not inspect._empty:
+                continue
+            # preserve previous behaviour: accessing missing keys will raise
+            # the same KeyError as before
+            _ = st.session_state[name]
+
+        if param.kind == Parameter.POSITIONAL_ONLY:
+            args.append(st.session_state[name])
+        elif param.kind == Parameter.VAR_POSITIONAL:
+            # expect an iterable in session_state[name]
+            args.extend(st.session_state.get(name, ()))
+        elif param.kind == Parameter.VAR_KEYWORD:
+            # expect a mapping in session_state[name]
+            kwargs.update(st.session_state.get(name, {}))
+        else:
+            kwargs[name] = st.session_state[name]
+
+    return func(*args, **kwargs)
 
 
 # ------------------------------------ STANDARD UTILS ------------------------------------

@@ -156,9 +156,9 @@ def calculate_rent_vs_buy(
     npv_rent_total -= rent_investment_value
 
     return {
-        "npv_buy_total": int(npv_buy_total),  # rounding to the nearest int
-        "npv_rent_total": int(npv_rent_total),  # rounding to the nearest int
-        "breakeven_year": breakeven_year,
+        'npv_buy_total': int(npv_buy_total),  # rounding to the nearest int
+        'npv_rent_total': int(npv_rent_total),  # rounding to the nearest int
+        'breakeven_year': breakeven_year,
     }
 
 
@@ -213,10 +213,10 @@ if __name__ == '__main__':
                     if isinstance(x, bool):
                         return x
                     if isinstance(x, int):
-                        return f"{x:,}".replace(',', ' ')
+                        return f'{x:,}'.replace(',', ' ')
                     if isinstance(x, float):
                         # round to nearest integer for display
-                        return f"{int(round(x)):,}".replace(',', ' ')
+                        return f'{int(round(x)):,}'.replace(',', ' ')
                 except Exception:
                     pass
                 return x

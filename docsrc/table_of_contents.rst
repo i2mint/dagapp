@@ -9,6 +9,7 @@
    module_docs/dagapp/examples/configs_example
    module_docs/dagapp/examples/consulting_fees
    module_docs/dagapp/examples/infection
+   module_docs/dagapp/examples/rent_or_buy
    module_docs/dagapp/examples/simple_example
    module_docs/dagapp/examples/vectorized_example
    module_docs/dagapp/page_funcs

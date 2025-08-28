@@ -107,10 +107,7 @@ def vector_factory(dag, nodes, funcs, col):
     """
     with col:
         for node in dag.sig.names:
-            st_kwargs = dict(
-                on_change=update_vec_nodes,
-                args=(dag, nodes, funcs, col),
-            )
+            st_kwargs = dict(on_change=update_vec_nodes, args=(dag, nodes, funcs, col),)
             mk_double_slider(node, st_kwargs, col)
 
 

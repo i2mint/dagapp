@@ -107,7 +107,10 @@ def vector_factory(dag, nodes, funcs, col):
     """
     with col:
         for node in dag.sig.names:
-            st_kwargs = dict(on_change=update_vec_nodes, args=(dag, nodes, funcs, col),)
+            st_kwargs = dict(
+                on_change=update_vec_nodes,
+                args=(dag, nodes, funcs, col),
+            )
             mk_double_slider(node, st_kwargs, col)
 
 
@@ -359,17 +362,24 @@ def check_configs(dags, configs):
     """
     if len(configs) != len(dags):
         st_error('You need to define configs for all of your DAGs!')
-
     for dag, config in zip(dags, configs):
+        # config should be a dict containing an 'arg_types' mapping
+        if not isinstance(config, dict):
+            st_error(
+                'Each config must be a dict containing "arg_types" and optional "ranges".'
+            )
+
         if 'arg_types' not in config:
             st_error('You need to define an argument type for your root nodes!')
         else:
-            if len('arg_types') < len(dag.roots):
+            # ensure arg_types provides an entry per root node
+            if len(config['arg_types']) < len(dag.roots):
                 st_error(
                     'You need to define an argument type for all of your root nodes!'
                 )
 
-            if 'slider' in config['arg_types']:
+            # if any of the arg types is a slider, ensure ranges are provided
+            if 'slider' in config['arg_types'].values():
                 if 'ranges' not in config:
                     st_error(
                         'You need to define slider ranges if you want to set slider as an argument type!'

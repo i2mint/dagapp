@@ -6,4 +6,5 @@ Various dagapp examples:
 - classification_metric_factory
 - infection
 - vectorized_example
+- rent_or_buy
 """

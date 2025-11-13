@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-from typing import Mapping, Iterable
+from collections.abc import Mapping, Iterable
 from meshed.itools import successors
 from lined import iterize
 

@@ -3,7 +3,7 @@
 from collections import Counter
 import numpy as np
 from functools import partial
-from typing import Mapping, Iterable
+from collections.abc import Mapping, Iterable
 
 from meshed.dag import DAG
 from dagapp.base import dag_app

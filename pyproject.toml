@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dagapp"
-version = "0.1.19"
+version = "0.1.20"
 description = "Making apps from DAGs by just snapping your fingers"
 readme = "README.md"
 requires-python = ">=3.10"

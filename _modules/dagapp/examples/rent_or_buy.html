@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dagapp.examples.rent_or_buy &mdash; dagapp 0.1.19 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3d116926"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            dagapp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp.html">dagapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/base.html">dagapp.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples.html">dagapp.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/consulting_fees.html">dagapp.examples.consulting_fees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/infection.html">dagapp.examples.infection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/rent_or_buy.html">dagapp.examples.rent_or_buy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/utils.html">dagapp.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dagapp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dagapp.examples.rent_or_buy</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dagapp.examples.rent_or_buy</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Rent or Buy.</span>
+
+<span class="sd">Based on this article:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+
+<div class="viewcode-block" id="calculate_rent_vs_buy">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/rent_or_buy.html#dagapp.examples.rent_or_buy.calculate_rent_vs_buy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_rent_vs_buy</span><span class="p">(</span>
+    <span class="n">years_to_evaluate</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="c1"># Default values extracted from the original NYT article&#39;s JavaScript</span>
+    <span class="n">home_price</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span>
+    <span class="n">down_payment_percent</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
+    <span class="n">mortgage_interest_rate</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span>
+    <span class="n">property_tax_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">home_insurance_annual</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span>
+    <span class="n">maintenance_percent</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">closing_cost_percent</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">selling_cost_percent</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+    <span class="n">annual_rent</span><span class="o">=</span><span class="mi">24000</span><span class="p">,</span>
+    <span class="n">rent_increase_rate</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">home_value_growth_rate</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
+    <span class="n">investment_return_rate</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+    <span class="n">marginal_tax_rate</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">loan_term_years</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">inflation_rate</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates and compares the total net present value of buying vs. renting a home</span>
+<span class="sd">    over a specified number of years, based on the logic from the NYT calculator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        years_to_evaluate (int): The number of years to run the simulation.</span>
+<span class="sd">        ... (other arguments for financial variables with default values)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary containing the total accumulated costs for both scenarios and</span>
+<span class="sd">        the breakeven year.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize variables for both scenarios</span>
+    <span class="n">npv_buy_total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">npv_rent_total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">breakeven_year</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Initial setup for buying scenario</span>
+    <span class="n">principal</span> <span class="o">=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">down_payment_percent</span><span class="p">)</span>
+    <span class="n">closing_costs</span> <span class="o">=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="n">closing_cost_percent</span>
+
+    <span class="c1"># Amortization formula to calculate monthly mortgage payment</span>
+    <span class="n">monthly_interest_rate</span> <span class="o">=</span> <span class="n">mortgage_interest_rate</span> <span class="o">/</span> <span class="mi">12</span>
+    <span class="n">num_payments</span> <span class="o">=</span> <span class="n">loan_term_years</span> <span class="o">*</span> <span class="mi">12</span>
+
+    <span class="k">if</span> <span class="n">monthly_interest_rate</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">monthly_mortgage_payment</span> <span class="o">=</span> <span class="n">principal</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">monthly_interest_rate</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">monthly_interest_rate</span><span class="p">,</span> <span class="o">-</span><span class="n">num_payments</span><span class="p">))</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Handle case where interest rate is 0</span>
+        <span class="n">monthly_mortgage_payment</span> <span class="o">=</span> <span class="n">principal</span> <span class="o">/</span> <span class="n">num_payments</span>
+
+    <span class="n">current_loan_balance</span> <span class="o">=</span> <span class="n">principal</span>
+    <span class="n">total_interest_paid_yearly</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Initial investment for renting scenario (down payment + closing costs)</span>
+    <span class="n">initial_rent_investment</span> <span class="o">=</span> <span class="p">(</span><span class="n">home_price</span> <span class="o">*</span> <span class="n">down_payment_percent</span><span class="p">)</span> <span class="o">+</span> <span class="n">closing_costs</span>
+    <span class="n">rent_investment_value</span> <span class="o">=</span> <span class="n">initial_rent_investment</span>
+
+    <span class="c1"># Main simulation loop</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">years_to_evaluate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="c1"># --- BUYING SCENARIO CALCULATIONS ---</span>
+
+        <span class="c1"># Calculate yearly costs</span>
+        <span class="n">annual_property_tax</span> <span class="o">=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="n">property_tax_rate</span>
+        <span class="n">annual_maintenance</span> <span class="o">=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="n">maintenance_percent</span>
+        <span class="n">annual_insurance</span> <span class="o">=</span> <span class="n">home_insurance_annual</span>
+
+        <span class="c1"># Calculate mortgage interest paid for the year and update loan balance</span>
+        <span class="n">annual_principal_paid</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">total_interest_paid_yearly</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;=</span> <span class="n">loan_term_years</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+                <span class="n">interest_this_month</span> <span class="o">=</span> <span class="n">current_loan_balance</span> <span class="o">*</span> <span class="n">monthly_interest_rate</span>
+                <span class="n">principal_this_month</span> <span class="o">=</span> <span class="n">monthly_mortgage_payment</span> <span class="o">-</span> <span class="n">interest_this_month</span>
+                <span class="n">current_loan_balance</span> <span class="o">-=</span> <span class="n">principal_this_month</span>
+                <span class="n">total_interest_paid_yearly</span> <span class="o">+=</span> <span class="n">interest_this_month</span>
+                <span class="n">annual_principal_paid</span> <span class="o">+=</span> <span class="n">principal_this_month</span>
+
+        <span class="c1"># Calculate tax deductions on mortgage interest and property taxes</span>
+        <span class="n">tax_deduction</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">total_interest_paid_yearly</span> <span class="o">+</span> <span class="n">annual_property_tax</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="n">marginal_tax_rate</span>
+
+        <span class="c1"># Total annual cost of buying before selling and home appreciation</span>
+        <span class="n">buy_cost_this_year</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">monthly_mortgage_payment</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">annual_property_tax</span>
+            <span class="o">+</span> <span class="n">annual_maintenance</span>
+            <span class="o">+</span> <span class="n">annual_insurance</span>
+            <span class="o">-</span> <span class="n">tax_deduction</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Update home value for the year</span>
+        <span class="n">home_value_after_year</span> <span class="o">=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">home_value_growth_rate</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+
+        <span class="c1"># Calculate selling cost and equity at the end of the simulation</span>
+        <span class="k">if</span> <span class="n">year</span> <span class="o">==</span> <span class="n">years_to_evaluate</span><span class="p">:</span>
+            <span class="n">selling_cost</span> <span class="o">=</span> <span class="n">home_value_after_year</span> <span class="o">*</span> <span class="n">selling_cost_percent</span>
+
+            <span class="c1"># Calculate total equity gained from principal payments and appreciation</span>
+            <span class="n">total_equity</span> <span class="o">=</span> <span class="n">home_value_after_year</span> <span class="o">-</span> <span class="n">current_loan_balance</span>
+
+            <span class="c1"># Final costs and gains</span>
+            <span class="n">buy_cost_this_year</span> <span class="o">+=</span> <span class="n">selling_cost</span>
+            <span class="n">buy_cost_this_year</span> <span class="o">-=</span> <span class="n">total_equity</span>
+
+        <span class="c1"># Discount annual cost back to present value</span>
+        <span class="n">npv_buy_total</span> <span class="o">+=</span> <span class="n">buy_cost_this_year</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">inflation_rate</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+
+        <span class="c1"># --- RENTING SCENARIO CALCULATIONS ---</span>
+
+        <span class="c1"># Annual cost of rent</span>
+        <span class="n">annual_rent_cost</span> <span class="o">=</span> <span class="n">annual_rent</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rent_increase_rate</span><span class="p">,</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Calculate additional funds invested from not buying</span>
+        <span class="n">rent_savings_invested</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">monthly_mortgage_payment</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">home_price</span> <span class="o">*</span> <span class="n">property_tax_rate</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">home_price</span> <span class="o">*</span> <span class="n">maintenance_percent</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">home_insurance_annual</span>
+        <span class="p">)</span>
+
+        <span class="c1"># The key difference from the original NYT logic is that the invested rent savings</span>
+        <span class="c1"># are calculated separately and compounded. The provided HTML logic does this</span>
+        <span class="c1"># on an NPV basis. Let&#39;s stick to the NPV model for direct comparison.</span>
+
+        <span class="c1"># Discount annual rent cost back to present value</span>
+        <span class="n">npv_rent_total</span> <span class="o">+=</span> <span class="n">annual_rent_cost</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">inflation_rate</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+
+        <span class="c1"># Account for investment gains</span>
+        <span class="c1"># The original script&#39;s logic for NPV of investments is complex.</span>
+        <span class="c1"># This simplified version adds the gains from the initial investment.</span>
+        <span class="n">rent_investment_value</span> <span class="o">=</span> <span class="n">rent_investment_value</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">investment_return_rate</span><span class="p">)</span>
+
+        <span class="c1"># Update breakeven year</span>
+        <span class="k">if</span> <span class="n">breakeven_year</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">npv_buy_total</span> <span class="o">&lt;</span> <span class="n">npv_rent_total</span><span class="p">:</span>
+            <span class="n">breakeven_year</span> <span class="o">=</span> <span class="n">year</span>
+
+    <span class="c1"># The original script adds the down payment and closing costs to the final NPV</span>
+    <span class="c1"># This is a common practice to include initial costs in the total NPV calculation</span>
+    <span class="n">npv_buy_total</span> <span class="o">+=</span> <span class="n">home_price</span> <span class="o">*</span> <span class="n">down_payment_percent</span> <span class="o">+</span> <span class="n">closing_costs</span>
+    <span class="n">npv_rent_total</span> <span class="o">-=</span> <span class="n">rent_investment_value</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;npv_buy_total&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">npv_buy_total</span><span class="p">),</span>  <span class="c1"># rounding to the nearest int</span>
+        <span class="s1">&#39;npv_rent_total&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">npv_rent_total</span><span class="p">),</span>  <span class="c1"># rounding to the nearest int</span>
+        <span class="s1">&#39;breakeven_year&#39;</span><span class="p">:</span> <span class="n">breakeven_year</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag_app</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">meshed.dag</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+    <span class="n">rendering_kind</span> <span class="o">=</span> <span class="s1">&#39;static_page_func&#39;</span>
+
+    <span class="k">if</span> <span class="n">rendering_kind</span> <span class="o">==</span> <span class="s1">&#39;static_page_func&#39;</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.page_funcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPageFunc</span>
+
+        <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="p">[</span><span class="n">DAG</span><span class="p">((</span><span class="n">calculate_rent_vs_buy</span><span class="p">,))],</span> <span class="n">page_factory</span><span class="o">=</span><span class="n">StaticPageFunc</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">rendering_kind</span> <span class="o">==</span> <span class="s1">&#39;json_page_func&#39;</span> <span class="ow">or</span> <span class="n">rendering_kind</span> <span class="o">==</span> <span class="s1">&#39;table_page_func&#39;</span><span class="p">:</span>
+        <span class="c1"># Custom page function that renders dict outputs as JSON or as a one-row table</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.page_funcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePageFunc</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+            <span class="n">get_funcs</span><span class="p">,</span>
+            <span class="n">get_nodes</span><span class="p">,</span>
+            <span class="n">get_values</span><span class="p">,</span>
+            <span class="n">get_from_configs</span><span class="p">,</span>
+            <span class="n">display_node</span><span class="p">,</span>
+            <span class="n">get_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">format_display_value</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Format numeric values for display: no decimals and space as thousands separator.</span>
+
+<span class="sd">            - ints -&gt; &quot;123 456&quot;</span>
+<span class="sd">            - floats -&gt; rounded to nearest int and formatted as above</span>
+<span class="sd">            - iterables -&gt; format each element</span>
+<span class="sd">            - other types returned unchanged</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># handle numpy scalars/arrays</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_np</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">_np</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">fmt_num</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">_np</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">generic</span><span class="p">):</span>
+                        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">x</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                        <span class="c1"># round to nearest integer for display</span>
+                        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">return</span> <span class="n">x</span>
+
+            <span class="c1"># lists/tuples/ndarrays</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">_np</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_np</span><span class="p">,</span> <span class="s1">&#39;ndarray&#39;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">fmt_num</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">fmt_num</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="c1"># format dict values recursively</span>
+                <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">format_display_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+            <span class="k">return</span> <span class="n">fmt_num</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">update_static_nodes_dict</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Update non-root nodes and render dict outputs as JSON/table.&quot;&quot;&quot;</span>
+            <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">]:</span>
+                    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="c1"># format values for display</span>
+                        <span class="n">disp_val</span> <span class="o">=</span> <span class="n">format_display_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                        <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">rendering_kind</span> <span class="o">==</span> <span class="s1">&#39;json_page_func&#39;</span><span class="p">:</span>
+                                <span class="n">st</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">disp_val</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="c1"># table: render dict as a single-row DataFrame</span>
+                                <span class="n">st</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">disp_val</span><span class="p">]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                        <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">reload_nodes_dict</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">var_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">:</span>
+                    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+                    <span class="p">]</span>
+                    <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">class</span><span class="w"> </span><span class="nc">DictPageFunc</span><span class="p">(</span><span class="n">BasePageFunc</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_title</span><span class="p">:</span>
+                    <span class="n">st</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;## **</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">page_title</span><span class="si">}</span><span class="s1">**&#39;&#39;&#39;</span><span class="p">)</span>
+
+                <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">columns</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+                <span class="n">c2</span><span class="o">.</span><span class="n">graphviz_chart</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">dot_digraph</span><span class="p">())</span>
+                <span class="n">funcs</span> <span class="o">=</span> <span class="n">get_funcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">)</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="n">get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">)</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">get_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+                <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span> <span class="o">=</span> <span class="n">get_from_configs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="n">c1</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+                        <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+                            <span class="n">on_change</span><span class="o">=</span><span class="n">update_static_nodes_dict</span><span class="p">,</span>
+                            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">c1</span><span class="p">),</span>
+                            <span class="n">key</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">display_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">)</span>
+
+                    <span class="n">st</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
+                        <span class="s1">&#39;Reload DAG from root nodes&#39;</span><span class="p">,</span>
+                        <span class="n">on_click</span><span class="o">=</span><span class="n">reload_nodes_dict</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">),</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># initial render</span>
+                <span class="n">update_static_nodes_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">c1</span><span class="p">)</span>
+
+        <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="p">[</span><span class="n">DAG</span><span class="p">((</span><span class="n">calculate_rent_vs_buy</span><span class="p">,))],</span> <span class="n">page_factory</span><span class="o">=</span><span class="n">DictPageFunc</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown rendering kind: </span><span class="si">{</span><span class="n">rendering_kind</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

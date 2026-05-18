@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dagapp.examples.consulting_fees &mdash; dagapp 0.1.19 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3d116926"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            dagapp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp.html">dagapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/base.html">dagapp.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples.html">dagapp.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/consulting_fees.html">dagapp.examples.consulting_fees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/infection.html">dagapp.examples.infection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/rent_or_buy.html">dagapp.examples.rent_or_buy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/dagapp/utils.html">dagapp.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dagapp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dagapp.examples.consulting_fees</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dagapp.examples.consulting_fees</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Compute consulting fees</span>
+
+<span class="sd">All common parameter defaults are centralized in the `dflt` single-source-of-truth</span>
+<span class="sd">so functions that share parameter names also share the same defaults. This</span>
+<span class="sd">avoids signature conflicts when building a DAG using meshed (parameter merging).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">meshed.dag</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="c1"># Single source of truth for shared defaults used across function signatures.</span>
+<span class="c1"># Use attribute access (dflt.&lt;name&gt;) so defaults are clearly named and grouped.</span>
+<span class="n">dflt</span> <span class="o">=</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
+    <span class="c1"># billing defaults</span>
+    <span class="n">retainer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="o">=</span><span class="mf">2800.0</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="o">=</span><span class="mf">2400.0</span><span class="p">,</span>
+    <span class="c1"># time defaults</span>
+    <span class="n">hours_per_day</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+    <span class="n">committed_days</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># percentage / rates</span>
+    <span class="n">flex_premium_pct</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span>
+    <span class="n">vat_rate</span><span class="o">=</span><span class="mf">0.081</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="effective_day_rate">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.effective_day_rate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">effective_day_rate</span><span class="p">(</span>
+    <span class="n">retainer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ad_hoc_day_rate</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer_day_rate</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the effective day-rate based on retainer flag.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">retainer_day_rate</span> <span class="k">if</span> <span class="n">retainer</span> <span class="k">else</span> <span class="n">ad_hoc_day_rate</span></div>
+
+
+
+<div class="viewcode-block" id="effective_hourly_rate">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.effective_hourly_rate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">effective_hourly_rate</span><span class="p">(</span>
+    <span class="n">effective_day_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">hours_per_day</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">hours_per_day</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the hourly equivalent of the effective day-rate.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">effective_day_rate</span> <span class="o">/</span> <span class="n">hours_per_day</span></div>
+
+
+
+<div class="viewcode-block" id="committed_days">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.committed_days">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">committed_days</span><span class="p">(</span><span class="n">tier</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;light&#39;</span><span class="p">,</span> <span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="s1">&#39;deep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;regular&#39;</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return default committed days/month for a named tier.&quot;&quot;&quot;</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;light&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span> <span class="s1">&#39;regular&#39;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">,</span> <span class="s1">&#39;deep&#39;</span><span class="p">:</span> <span class="mf">12.0</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">mapping</span><span class="p">[</span><span class="n">tier</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="base_fee_ex_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.base_fee_ex_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">base_fee_ex_vat</span><span class="p">(</span>
+    <span class="n">effective_day_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">committed_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">committed_days</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the base monthly fee (ex-VAT) for committed days.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">effective_day_rate</span> <span class="o">*</span> <span class="n">committed_days</span></div>
+
+
+
+<div class="viewcode-block" id="flex_fee_ex_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.flex_fee_ex_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">flex_fee_ex_vat</span><span class="p">(</span>
+    <span class="n">effective_day_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ramp_up_days</span><span class="p">,</span>
+    <span class="n">flex_premium_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">flex_premium_pct</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the flex (short-notice) component (ex-VAT).</span>
+<span class="sd">    Applies only to additional ramp-up days beyond the commitment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">effective_day_rate</span> <span class="o">*</span> <span class="n">ramp_up_days</span> <span class="o">*</span> <span class="n">flex_premium_pct</span></div>
+
+
+
+<div class="viewcode-block" id="subtotal_ex_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.subtotal_ex_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">subtotal_ex_vat</span><span class="p">(</span><span class="n">base_fee_ex_vat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">flex_fee_ex_vat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the subtotal (ex-VAT).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">base_fee_ex_vat</span> <span class="o">+</span> <span class="n">flex_fee_ex_vat</span></div>
+
+
+
+<div class="viewcode-block" id="vat_amount">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.vat_amount">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vat_amount</span><span class="p">(</span><span class="n">subtotal_ex_vat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">vat_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">vat_rate</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the VAT amount.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">subtotal_ex_vat</span> <span class="o">*</span> <span class="n">vat_rate</span></div>
+
+
+
+<div class="viewcode-block" id="total_incl_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.total_incl_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_incl_vat</span><span class="p">(</span><span class="n">subtotal_ex_vat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">vat_amount</span><span class="p">:</span> <span class="nb">float</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total including VAT.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">subtotal_ex_vat</span> <span class="o">+</span> <span class="n">vat_amount</span></div>
+
+
+
+<span class="c1"># --- Convenience wrappers for common scenarios ---</span>
+
+
+<div class="viewcode-block" id="light_monthly_total_incl_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.light_monthly_total_incl_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">light_monthly_total_incl_vat</span><span class="p">(</span>
+    <span class="n">retainer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ad_hoc_day_rate</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer_day_rate</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ramp_up_days</span><span class="p">,</span>
+    <span class="n">flex_premium_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">flex_premium_pct</span><span class="p">,</span>
+    <span class="n">vat_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">vat_rate</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return total incl. VAT for the &#39;light&#39; (4 d/mo) scenario.&quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">effective_day_rate</span><span class="p">(</span><span class="n">retainer</span><span class="p">,</span> <span class="n">ad_hoc_day_rate</span><span class="p">,</span> <span class="n">retainer_day_rate</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">base_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">committed_days</span><span class="p">(</span><span class="s1">&#39;light&#39;</span><span class="p">))</span>
+    <span class="n">flex</span> <span class="o">=</span> <span class="n">flex_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ramp_up_days</span><span class="p">,</span> <span class="n">flex_premium_pct</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">subtotal_ex_vat</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">flex</span><span class="p">)</span>
+    <span class="n">vat</span> <span class="o">=</span> <span class="n">vat_amount</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat_rate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_incl_vat</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="regular_monthly_total_incl_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.regular_monthly_total_incl_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">regular_monthly_total_incl_vat</span><span class="p">(</span>
+    <span class="n">retainer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ad_hoc_day_rate</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer_day_rate</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ramp_up_days</span><span class="p">,</span>
+    <span class="n">flex_premium_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">flex_premium_pct</span><span class="p">,</span>
+    <span class="n">vat_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">vat_rate</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return total incl. VAT for the &#39;regular&#39; (8 d/mo) scenario.&quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">effective_day_rate</span><span class="p">(</span><span class="n">retainer</span><span class="p">,</span> <span class="n">ad_hoc_day_rate</span><span class="p">,</span> <span class="n">retainer_day_rate</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">base_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">committed_days</span><span class="p">(</span><span class="s1">&#39;regular&#39;</span><span class="p">))</span>
+    <span class="n">flex</span> <span class="o">=</span> <span class="n">flex_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ramp_up_days</span><span class="p">,</span> <span class="n">flex_premium_pct</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">subtotal_ex_vat</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">flex</span><span class="p">)</span>
+    <span class="n">vat</span> <span class="o">=</span> <span class="n">vat_amount</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat_rate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_incl_vat</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="deep_monthly_total_incl_vat">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.deep_monthly_total_incl_vat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">deep_monthly_total_incl_vat</span><span class="p">(</span>
+    <span class="n">retainer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ad_hoc_day_rate</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer_day_rate</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ramp_up_days</span><span class="p">,</span>
+    <span class="n">flex_premium_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">flex_premium_pct</span><span class="p">,</span>
+    <span class="n">vat_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">vat_rate</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return total incl. VAT for the &#39;deep&#39; (12 d/mo) scenario.&quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">effective_day_rate</span><span class="p">(</span><span class="n">retainer</span><span class="p">,</span> <span class="n">ad_hoc_day_rate</span><span class="p">,</span> <span class="n">retainer_day_rate</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">base_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">committed_days</span><span class="p">(</span><span class="s1">&#39;deep&#39;</span><span class="p">))</span>
+    <span class="n">flex</span> <span class="o">=</span> <span class="n">flex_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ramp_up_days</span><span class="p">,</span> <span class="n">flex_premium_pct</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">subtotal_ex_vat</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">flex</span><span class="p">)</span>
+    <span class="n">vat</span> <span class="o">=</span> <span class="n">vat_amount</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat_rate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_incl_vat</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --- One-shot calculator when you just want the numbers quickly ---</span>
+
+
+<div class="viewcode-block" id="monthly_totals">
+<a class="viewcode-back" href="../../../module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.monthly_totals">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">monthly_totals</span><span class="p">(</span>
+    <span class="n">committed_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">committed_days</span><span class="p">,</span>
+    <span class="n">ramp_up_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ramp_up_days</span><span class="p">,</span>
+    <span class="n">retainer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer</span><span class="p">,</span>
+    <span class="n">ad_hoc_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">ad_hoc_day_rate</span><span class="p">,</span>
+    <span class="n">retainer_day_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">retainer_day_rate</span><span class="p">,</span>
+    <span class="n">flex_premium_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">flex_premium_pct</span><span class="p">,</span>
+    <span class="n">vat_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dflt</span><span class="o">.</span><span class="n">vat_rate</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dict with all intermediate values for transparency:</span>
+<span class="sd">    effective_day_rate, base_fee_ex_vat, flex_fee_ex_vat, subtotal_ex_vat,</span>
+<span class="sd">    vat_amount, total_incl_vat.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">effective_day_rate</span><span class="p">(</span><span class="n">retainer</span><span class="p">,</span> <span class="n">ad_hoc_day_rate</span><span class="p">,</span> <span class="n">retainer_day_rate</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">base_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">committed_days</span><span class="p">)</span>
+    <span class="n">flex</span> <span class="o">=</span> <span class="n">flex_fee_ex_vat</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ramp_up_days</span><span class="p">,</span> <span class="n">flex_premium_pct</span><span class="p">)</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">subtotal_ex_vat</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">flex</span><span class="p">)</span>
+    <span class="n">vat</span> <span class="o">=</span> <span class="n">vat_amount</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat_rate</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total_incl_vat</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">vat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;effective_day_rate&#39;</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span>
+        <span class="s1">&#39;base_fee_ex_vat&#39;</span><span class="p">:</span> <span class="n">base</span><span class="p">,</span>
+        <span class="s1">&#39;flex_fee_ex_vat&#39;</span><span class="p">:</span> <span class="n">flex</span><span class="p">,</span>
+        <span class="s1">&#39;subtotal_ex_vat&#39;</span><span class="p">:</span> <span class="n">sub</span><span class="p">,</span>
+        <span class="s1">&#39;vat_amount&#39;</span><span class="p">:</span> <span class="n">vat</span><span class="p">,</span>
+        <span class="s1">&#39;total_incl_vat&#39;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dag</span><span class="p">():</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># &quot;monthly_totals&quot;: monthly_totals,</span>
+        <span class="c1"># &quot;deep_monthly_total_incl_vat&quot;: deep_monthly_total_incl_vat,</span>
+        <span class="c1"># &quot;regular_monthly_total_incl_vat&quot;: regular_monthly_total_incl_vat,</span>
+        <span class="c1"># &quot;light_monthly_total_incl_vat&quot;: light_monthly_total_incl_vat,</span>
+        <span class="c1"># &quot;committed_days&quot;: committed_days,</span>
+        <span class="c1"># &quot;effective_hourly_rate&quot;: effective_hourly_rate,</span>
+        <span class="s1">&#39;effective_day_rate&#39;</span><span class="p">:</span> <span class="n">effective_day_rate</span><span class="p">,</span>
+        <span class="s1">&#39;base_fee_ex_vat&#39;</span><span class="p">:</span> <span class="n">base_fee_ex_vat</span><span class="p">,</span>
+        <span class="s1">&#39;flex_fee_ex_vat&#39;</span><span class="p">:</span> <span class="n">flex_fee_ex_vat</span><span class="p">,</span>
+        <span class="s1">&#39;subtotal_ex_vat&#39;</span><span class="p">:</span> <span class="n">subtotal_ex_vat</span><span class="p">,</span>
+        <span class="s1">&#39;vat_amount&#39;</span><span class="p">:</span> <span class="n">vat_amount</span><span class="p">,</span>
+        <span class="s1">&#39;total_incl_vat&#39;</span><span class="p">:</span> <span class="n">total_incl_vat</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">(</span><span class="n">funcs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">dag</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">dag</span> <span class="o">=</span> <span class="n">get_dag</span><span class="p">()</span>
+    <span class="n">collapsed_dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">([</span><span class="n">dag</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
+    <span class="n">dags</span> <span class="o">=</span> <span class="p">[</span><span class="n">collapsed_dag</span><span class="p">,</span> <span class="n">dag</span><span class="p">]</span>
+
+    <span class="c1"># configs = [</span>
+    <span class="c1">#     {&quot;page_name&quot;: &quot;simple&quot;},  # for collapsed_dag</span>
+    <span class="c1">#     {&quot;page_name&quot;: &quot;details&quot;},  # for dag</span>
+    <span class="c1"># ]</span>
+    <span class="n">configs</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="n">dags</span><span class="p">,</span> <span class="n">configs</span><span class="o">=</span><span class="n">configs</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

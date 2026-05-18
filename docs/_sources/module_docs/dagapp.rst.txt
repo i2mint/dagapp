@@ -1,4 +1,0 @@
-dagapp
-======
-.. automodule:: dagapp
-   :members:

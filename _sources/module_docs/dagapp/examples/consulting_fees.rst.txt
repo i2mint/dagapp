@@ -1,0 +1,4 @@
+dagapp.examples.consulting_fees
+===============================
+.. automodule:: dagapp.examples.consulting_fees
+   :members:

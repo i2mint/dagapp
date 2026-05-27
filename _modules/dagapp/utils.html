@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dagapp.utils &mdash; dagapp 0.1.19 documentation</title>
+  <title>dagapp.utils &mdash; dagapp 0.1.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3d116926"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -100,27 +100,27 @@
 <span class="n">DFLT_VALS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nb">int</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="nb">float</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span> <span class="s1">&#39;0,0,0,0&#39;</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span> <span class="s2">&quot;0,0,0,0&quot;</span><span class="p">,</span>
     <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tn</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
     <span class="nb">bool</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">DFLT_ANNOT_ARGTYPE_MAP</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nb">int</span><span class="p">:</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span>
-    <span class="nb">float</span><span class="p">:</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span>
-    <span class="nb">str</span><span class="p">:</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span>
-    <span class="nb">bool</span><span class="p">:</span> <span class="s1">&#39;bool&#39;</span><span class="p">,</span>
-    <span class="nb">list</span><span class="p">:</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span>
-    <span class="nb">dict</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;num&quot;</span><span class="p">,</span>
+    <span class="nb">float</span><span class="p">:</span> <span class="s2">&quot;num&quot;</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+    <span class="nb">bool</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+    <span class="nb">list</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+    <span class="nb">dict</span><span class="p">:</span> <span class="s2">&quot;dict&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">ARG_TYPE_WIDGET_MAP</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;num&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">,</span>
-    <span class="s1">&#39;slider&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">,</span>
-    <span class="s1">&#39;double_slider&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">,</span>
-    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
-    <span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
-    <span class="s1">&#39;dict&#39;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">,</span>
+    <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">,</span>
+    <span class="s2">&quot;slider&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">,</span>
+    <span class="s2">&quot;double_slider&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">,</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
+    <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">text_input</span><span class="p">,</span>
+    <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -134,9 +134,9 @@
 <span class="sd">    Returns a vectorized input defined by a double slider</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-        <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="n">stop</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_num&#39;</span><span class="p">]),</span>
+        <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_values&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">stop</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_values&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_num&quot;</span><span class="p">]),</span>
         <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span></div>
 
@@ -154,7 +154,7 @@
             <span class="n">vec_input</span> <span class="o">=</span> <span class="n">get_vec_input</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
                 <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">arg_type</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
                     <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec_input</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec_input</span><span class="p">))</span>
@@ -175,7 +175,7 @@
     <span class="n">func</span> <span class="o">=</span> <span class="n">iterize</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
     <span class="n">val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
     <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-    <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">: &#39;</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
     <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]))</span></div>
 
 
@@ -189,15 +189,15 @@
     <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
             <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span>
-                <span class="s1">&#39;vectorization range&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;vectorization range&quot;</span><span class="p">,</span>
                 <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
-                <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_values&#39;</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_values&quot;</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">st_kwargs</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span>
-                <span class="s1">&#39;num values&#39;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_num&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span>
+                <span class="s2">&quot;num values&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_num&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span>
             <span class="p">)</span>
             <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">get_vec_input</span><span class="p">(</span><span class="n">node</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span></div>
 
@@ -211,7 +211,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">col</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
-            <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">on_change</span><span class="o">=</span><span class="n">update_vec_nodes</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">),)</span>
+            <span class="n">st_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">on_change</span><span class="o">=</span><span class="n">update_vec_nodes</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span>
+            <span class="p">)</span>
             <span class="n">mk_double_slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></div>
 
 
@@ -247,14 +250,14 @@
             <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">arg_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;typing.Iterable&#39;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
-        <span class="k">elif</span> <span class="s1">&#39;typing.Mapping&#39;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;typing.Iterable&quot;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="s2">&quot;typing.Mapping&quot;</span> <span class="ow">in</span> <span class="n">arg_type</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">tp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_tp&#39;</span><span class="p">],</span>
-                <span class="n">fn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_fn&#39;</span><span class="p">],</span>
-                <span class="n">fp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_fp&#39;</span><span class="p">],</span>
-                <span class="n">tn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">_tn&#39;</span><span class="p">],</span>
+                <span class="n">tp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">_tp&quot;</span><span class="p">],</span>
+                <span class="n">fn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">_fn&quot;</span><span class="p">],</span>
+                <span class="n">fp</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">_fp&quot;</span><span class="p">],</span>
+                <span class="n">tn</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">_tn&quot;</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
@@ -274,13 +277,13 @@
             <span class="n">val</span> <span class="o">=</span> <span class="n">funcs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                    <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                         <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-                <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+                <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">session_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 
@@ -312,26 +315,26 @@
 <span class="sd">    Displays the given node based on the argument type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">arg_types</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">](</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="s2">&quot;dict&quot;</span><span class="p">](</span><span class="n">node</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="n">condition</span><span class="p">]</span>
-                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="n">condition</span><span class="p">]</span>
+                    <span class="n">st_kwargs</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">st</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;slider&#39;</span><span class="p">:</span>
-            <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;min_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">st_kwargs</span><span class="p">[</span><span class="s1">&#39;max_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;slider&quot;</span><span class="p">:</span>
+            <span class="n">st_kwargs</span><span class="p">[</span><span class="s2">&quot;min_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">st_kwargs</span><span class="p">[</span><span class="s2">&quot;max_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">st</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">st_kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bool&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
             <span class="c1"># streamlit.radio does not accept a &#39;value&#39; kwarg; use checkbox</span>
             <span class="c1"># for boolean inputs which supports &#39;value&#39; and the same</span>
             <span class="c1"># on_change/key/args parameters.</span>
             <span class="n">st</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span>
                 <span class="n">node</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
-                <span class="n">key</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">),</span>
-                <span class="n">on_change</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;on_change&#39;</span><span class="p">),</span>
-                <span class="n">args</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">),</span>
+                <span class="n">on_change</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;on_change&quot;</span><span class="p">),</span>
+                <span class="n">args</span><span class="o">=</span><span class="n">st_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;args&quot;</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">widget</span> <span class="o">=</span> <span class="n">ARG_TYPE_WIDGET_MAP</span><span class="p">[</span><span class="n">arg_types</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
@@ -357,7 +360,7 @@
             <span class="p">)</span>
             <span class="n">display_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">st_kwargs</span><span class="p">)</span>
         <span class="n">st</span><span class="o">.</span><span class="n">button</span><span class="p">(</span>
-            <span class="s1">&#39;Reload DAG from root nodes&#39;</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">reload_nodes</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
+            <span class="s2">&quot;Reload DAG from root nodes&quot;</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">reload_nodes</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">dag</span><span class="p">,</span> <span class="n">funcs</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 
@@ -510,8 +513,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obtains information from user defined configs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">arg_types</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">]</span>
-    <span class="n">ranges</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s1">&#39;ranges&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs</span> <span class="k">else</span> <span class="n">configs</span><span class="p">[</span><span class="s1">&#39;ranges&#39;</span><span class="p">]</span>
+    <span class="n">arg_types</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="s2">&quot;arg_types&quot;</span><span class="p">]</span>
+    <span class="n">ranges</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;ranges&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs</span> <span class="k">else</span> <span class="n">configs</span><span class="p">[</span><span class="s2">&quot;ranges&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">arg_types</span><span class="p">,</span> <span class="n">ranges</span></div>
 
 
@@ -524,14 +527,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">configs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">dag</span> <span class="ow">in</span> <span class="n">dags</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg_types&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;arg_types&quot;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
-                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_ANNOT_ARGTYPE_MAP</span><span class="p">[</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;arg_types&quot;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_ANNOT_ARGTYPE_MAP</span><span class="p">[</span>
                     <span class="n">dag</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
                 <span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;num&#39;</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;arg_types&quot;</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;num&quot;</span>
         <span class="n">configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">configs</span></div>
 
@@ -544,7 +547,7 @@
 <span class="sd">    Checks the user defined configs to prevent errors</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">configs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dags</span><span class="p">):</span>
-        <span class="n">st_error</span><span class="p">(</span><span class="s1">&#39;You need to define configs for all of your DAGs!&#39;</span><span class="p">)</span>
+        <span class="n">st_error</span><span class="p">(</span><span class="s2">&quot;You need to define configs for all of your DAGs!&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">dag</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dags</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>
         <span class="c1"># config should be a dict containing an &#39;arg_types&#39; mapping</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -552,20 +555,20 @@
                 <span class="s1">&#39;Each config must be a dict containing &quot;arg_types&quot; and optional &quot;ranges&quot;.&#39;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="s1">&#39;arg_types&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="n">st_error</span><span class="p">(</span><span class="s1">&#39;You need to define an argument type for your root nodes!&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;arg_types&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">st_error</span><span class="p">(</span><span class="s2">&quot;You need to define an argument type for your root nodes!&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># ensure arg_types provides an entry per root node</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;arg_types&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">roots</span><span class="p">):</span>
                 <span class="n">st_error</span><span class="p">(</span>
-                    <span class="s1">&#39;You need to define an argument type for all of your root nodes!&#39;</span>
+                    <span class="s2">&quot;You need to define an argument type for all of your root nodes!&quot;</span>
                 <span class="p">)</span>
 
             <span class="c1"># if any of the arg types is a slider, ensure ranges are provided</span>
-            <span class="k">if</span> <span class="s1">&#39;slider&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;arg_types&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="k">if</span> <span class="s1">&#39;ranges&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;slider&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;arg_types&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;ranges&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
                     <span class="n">st_error</span><span class="p">(</span>
-                        <span class="s1">&#39;You need to define slider ranges if you want to set slider as an argument type!&#39;</span>
+                        <span class="s2">&quot;You need to define slider ranges if you want to set slider as an argument type!&quot;</span>
                     <span class="p">)</span></div>
 
 

@@ -24,17 +24,19 @@ Enough theory. Here's how it works...
 ```python
 from meshed.dag import DAG
 
+
 def b(a):
-    return 2 ** a
+    return 2**a
 
 
 def d(c):
-    return 10 - (5 ** c)
+    return 10 - (5**c)
 
 
 def result(b, d):
     return b * d
-    
+
+
 dag = DAG((b, d, result))
 ```
 

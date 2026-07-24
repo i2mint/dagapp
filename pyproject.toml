@@ -10,7 +10,23 @@ version = "0.1.21"
 description = "Making apps from DAGs by just snapping your fingers"
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = []
+license = "Apache-2.0"
+keywords = [
+    "dag",
+    "meshed",
+    "streamlit",
+    "app",
+    "graph",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 authors = []
 dependencies = [
     "meshed",
@@ -20,9 +36,6 @@ dependencies = [
     "pandas",
     "lined",
 ]
-
-[project.license]
-text = "Apache-2.0"
 
 [project.urls]
 Homepage = "https://github.com/i2mint/dagapp"
@@ -71,7 +84,7 @@ convention = "google"
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = [
-    "tests",
+    "dagapp",
 ]
 doctest_optionflags = [
     "NORMALIZE_WHITESPACE",

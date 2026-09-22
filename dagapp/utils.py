@@ -10,6 +10,27 @@ from lined import iterize
 import inspect
 from inspect import Parameter
 
+try:
+    from i2 import is_not_set
+except ImportError:  # older i2: same sentinel, not exported from the root yet
+    from i2.deco import NotSet as _NotSet
+
+    def is_not_set(x) -> bool:
+        """Return True iff ``x`` is ``i2``'s ``NotSet`` sentinel."""
+        return x is _NotSet
+
+
+def _has_default(param: Parameter) -> bool:
+    """True iff ``param`` has a real default (``i2``'s ``NotSet`` doesn't count).
+
+    >>> from i2.deco import NotSet
+    >>> [_has_default(Parameter('x', Parameter.KEYWORD_ONLY, default=d))
+    ...  for d in (None, 0, NotSet, Parameter.empty)]
+    [True, True, False, False]
+    """
+    return param.default is not Parameter.empty and not is_not_set(param.default)
+
+
 DFLT_VALS = {
     int: 0,
     float: 0.0,
@@ -281,7 +302,7 @@ def _compute_node_value(node, funcs):
         # If the parameter isn't present in session state but has a default,
         # omit it so the function can use its default value.
         if name not in st.session_state:
-            if param.default is not inspect._empty:
+            if _has_default(param):
                 continue
             # preserve previous behaviour: accessing missing keys will raise
             # the same KeyError as before
@@ -309,9 +330,11 @@ def get_root_values(dag):
     Returns the default values for all the root nodes found in dag
     """
     root_defaults = dict()
+    # i2's NotSet sentinel means "no default": fall back on the annotation or 0.0
+    defaults = {k: v for k, v in dag.sig.defaults.items() if not is_not_set(v)}
     for name in dag.sig.names:
-        if name in dag.sig.defaults:
-            dflt = dag.sig.defaults[name]
+        if name in defaults:
+            dflt = defaults[name]
             if dflt is not None:
                 root_defaults[name] = dflt
         elif name in dag.sig.annotations:

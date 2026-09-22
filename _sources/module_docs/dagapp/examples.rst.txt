@@ -1,4 +1,0 @@
-dagapp.examples
-===============
-.. automodule:: dagapp.examples
-   :members:

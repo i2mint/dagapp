@@ -1,0 +1,15 @@
+dagapp.base
+===========
+
+.. automodule:: dagapp.base
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      dag_app
+      dag_to_page_name
+      get_page_callbacks
+      get_pages_specs
+   

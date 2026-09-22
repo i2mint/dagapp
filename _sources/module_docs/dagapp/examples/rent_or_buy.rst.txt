@@ -1,4 +1,0 @@
-dagapp.examples.rent_or_buy
-===========================
-.. automodule:: dagapp.examples.rent_or_buy
-   :members:

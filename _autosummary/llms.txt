@@ -1,0 +1,15 @@
+# dagapp
+
+> Making apps from DAGs by just snapping your fingers
+
+
+## Pages in this subsection
+
+- [dagapp](dagapp.html.md): Making apps from DAGs
+- [dagapp.base](dagapp.base.html.md): The base components for making apps from DAGs
+- [dagapp.page_funcs](dagapp.page_funcs.html.md): Different page functions used to turn dags to app
+- [dagapp.utils](dagapp.utils.html.md): | &#96;check_configs&#96;(dags, configs)                    | Checks the user defined configs to prevent err...
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

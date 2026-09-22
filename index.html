@@ -1,200 +1,555 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to dagapp’s documentation! &mdash; dagapp 0.1.21 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt">
+    <title>dagapp &#8212; dagapp</title>
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b3d22ae5"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/epythet.css?v=37570c72" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=842aa08f"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dagapp" href="module_docs/dagapp.html" /> 
-</head>
+    <link rel="next" title="API reference" href="api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.22" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-          
-          <a href="#" class="icon icon-home">
-            dagapp
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp.html">dagapp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/base.html">dagapp.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples.html">dagapp.examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html">dagapp.examples.consulting_fees</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/infection.html">dagapp.examples.infection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/rent_or_buy.html">dagapp.examples.rent_or_buy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/utils.html">dagapp.utils</a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">dagapp</a>
-      </nav>
+  
+    
+  
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to dagapp’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">dagapp</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
   </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-dagapp-s-documentation">
-<h1>Welcome to dagapp’s documentation!<a class="headerlink" href="#welcome-to-dagapp-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp.html">dagapp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/base.html">dagapp.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/base.html#dagapp.base.get_pages_specs"><code class="docutils literal notranslate"><span class="pre">get_pages_specs()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples.html">dagapp.examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html">dagapp.examples.classification_metric_factory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.classifier_score"><code class="docutils literal notranslate"><span class="pre">classifier_score()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.confusion_count"><code class="docutils literal notranslate"><span class="pre">confusion_count()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.predict_proba"><code class="docutils literal notranslate"><span class="pre">predict_proba()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/classification_metric_factory.html#dagapp.examples.classification_metric_factory.prediction"><code class="docutils literal notranslate"><span class="pre">prediction()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/configs_example.html">dagapp.examples.configs_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html">dagapp.examples.consulting_fees</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.base_fee_ex_vat"><code class="docutils literal notranslate"><span class="pre">base_fee_ex_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.committed_days"><code class="docutils literal notranslate"><span class="pre">committed_days()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.deep_monthly_total_incl_vat"><code class="docutils literal notranslate"><span class="pre">deep_monthly_total_incl_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.effective_day_rate"><code class="docutils literal notranslate"><span class="pre">effective_day_rate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.effective_hourly_rate"><code class="docutils literal notranslate"><span class="pre">effective_hourly_rate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.flex_fee_ex_vat"><code class="docutils literal notranslate"><span class="pre">flex_fee_ex_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.light_monthly_total_incl_vat"><code class="docutils literal notranslate"><span class="pre">light_monthly_total_incl_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.monthly_totals"><code class="docutils literal notranslate"><span class="pre">monthly_totals()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.regular_monthly_total_incl_vat"><code class="docutils literal notranslate"><span class="pre">regular_monthly_total_incl_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.subtotal_ex_vat"><code class="docutils literal notranslate"><span class="pre">subtotal_ex_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.total_incl_vat"><code class="docutils literal notranslate"><span class="pre">total_incl_vat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/consulting_fees.html#dagapp.examples.consulting_fees.vat_amount"><code class="docutils literal notranslate"><span class="pre">vat_amount()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/infection.html">dagapp.examples.infection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/rent_or_buy.html">dagapp.examples.rent_or_buy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/examples/rent_or_buy.html#dagapp.examples.rent_or_buy.calculate_rent_vs_buy"><code class="docutils literal notranslate"><span class="pre">calculate_rent_vs_buy()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/simple_example.html">dagapp.examples.simple_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/examples/vectorized_example.html">dagapp.examples.vectorized_example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/page_funcs.html">dagapp.page_funcs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/dagapp/utils.html">dagapp.utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.check_configs"><code class="docutils literal notranslate"><span class="pre">check_configs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.display_factory"><code class="docutils literal notranslate"><span class="pre">display_factory()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.display_node"><code class="docutils literal notranslate"><span class="pre">display_node()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.display_vec_node"><code class="docutils literal notranslate"><span class="pre">display_vec_node()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_args"><code class="docutils literal notranslate"><span class="pre">get_args()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_default_configs"><code class="docutils literal notranslate"><span class="pre">get_default_configs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_from_configs"><code class="docutils literal notranslate"><span class="pre">get_from_configs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_func_values"><code class="docutils literal notranslate"><span class="pre">get_func_values()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_funcs"><code class="docutils literal notranslate"><span class="pre">get_funcs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_kwargs"><code class="docutils literal notranslate"><span class="pre">get_kwargs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_nodes"><code class="docutils literal notranslate"><span class="pre">get_nodes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_root_values"><code class="docutils literal notranslate"><span class="pre">get_root_values()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_values"><code class="docutils literal notranslate"><span class="pre">get_values()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.get_vec_input"><code class="docutils literal notranslate"><span class="pre">get_vec_input()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.mk_double_slider"><code class="docutils literal notranslate"><span class="pre">mk_double_slider()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.reload_nodes"><code class="docutils literal notranslate"><span class="pre">reload_nodes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.st_error"><code class="docutils literal notranslate"><span class="pre">st_error()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.static_factory"><code class="docutils literal notranslate"><span class="pre">static_factory()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.update_nodes"><code class="docutils literal notranslate"><span class="pre">update_nodes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.update_static_nodes"><code class="docutils literal notranslate"><span class="pre">update_static_nodes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.update_vec_nodes"><code class="docutils literal notranslate"><span class="pre">update_vec_nodes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/dagapp/utils.html#dagapp.utils.vector_factory"><code class="docutils literal notranslate"><span class="pre">vector_factory()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 0.1.21</p>
-<p>Last change: Jul 24, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/dagapp.html" class="btn btn-neutral float-right" title="dagapp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+</nav></div>
+      
     </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      
+      
+        <div class="navbar-item">
 
-</body>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/i2mint/dagapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/i2mint/dagapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- generated by epythet -->
+<section id="dagapp">
+<h1>dagapp<a class="headerlink" href="#dagapp" title="Link to this heading">#</a></h1>
+<p>Making apps from DAGs by just snapping your fingers</p>
+<p>To install:	<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">dagapp</span></code></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">What’s a DAG?</a></p>
+<p><a class="reference external" href="https://www.amazon.com/Life-Real-Dummies-Clueless-1996-10-03/dp/B01F81N4D0">What’s an app?</a></p>
+<p>This is a beautiful example of a DAG app woven into to an article: <a class="reference external" href="https://www.nytimes.com/interactive/2024/upshot/buy-rent-calculator.html">rent-or-buy article+app</a>
+The app serves as an illustration of the article and the article as the documentation of the app. (Note: It was a lot more “beautiful” in 2014, but they changed the graphic now! Boo!)</p>
+<p>Here’s <a class="reference external" href="https://www.mottomortgage.com/offices/makers-chattanooga/mortgage-calculators">another example of interactive calculators</a>.</p>
+<p>What <code class="docutils literal notranslate"><span class="pre">dagapp</span></code> wants to become is a framework to generate such effective communication, effortlessly.</p>
+<p>Enough theory. Here’s how it works…</p>
+<section id="a-simple-example">
+<h2>A simple example<a class="headerlink" href="#a-simple-example" title="Link to this heading">#</a></h2>
+<section id="first-make-a-dag">
+<h3>First make a DAG<a class="headerlink" href="#first-make-a-dag" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">meshed.dag</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">b</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">**</span><span class="n">a</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">d</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">-</span> <span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="n">c</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">result</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="o">*</span> <span class="n">d</span>
+
+
+<span class="n">dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">((</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="then-make-an-app">
+<h3>Then make an app<a class="headerlink" href="#then-make-an-app" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="n">dags</span> <span class="o">=</span> <span class="p">[</span><span class="n">dag</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="n">dags</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="then-run-the-app">
+<h3>Then run the app<a class="headerlink" href="#then-run-the-app" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">streamlit</span> <span class="n">run</span> <span class="n">example</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="and-this-is-what-you-get">
+<h3>… and this is what you get<a class="headerlink" href="#and-this-is-what-you-get" title="Link to this heading">#</a></h3>
+<p><img alt="png" src="https://github.com/i2mint/dagapp/blob/master/docs/images/simple_example.png?raw=true" /></p>
+</section>
+</section>
+<section id="a-more-complicated-example">
+<h2>A more complicated example<a class="headerlink" href="#a-more-complicated-example" title="Link to this heading">#</a></h2>
+<p>Let’s say we want to create two different DAGs and view them on the same streamlit page, keep all the non-root nodes static and represent the number inputs for one of the DAGs as sliders. We will use functions defined in <code class="docutils literal notranslate"><span class="pre">configs_example.py</span></code> for this example.</p>
+<section id="define-the-dags">
+<h3>Define the DAGs<a class="headerlink" href="#define-the-dags" title="Link to this heading">#</a></h3>
+<p>To start we can create our DAGs just like in the previous example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">profit_dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">((</span><span class="n">user_clicks</span><span class="p">,</span> <span class="n">rev</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">profit</span><span class="p">))</span>
+<span class="n">revenue_dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">((</span><span class="n">partners</span><span class="p">,</span> <span class="n">clicks</span><span class="p">,</span> <span class="n">revenue</span><span class="p">))</span>
+
+<span class="n">dags</span> <span class="o">=</span> <span class="p">[</span><span class="n">profit_dag</span><span class="p">,</span> <span class="n">revnue_dag</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="define-the-configs">
+<h3>Define the configs<a class="headerlink" href="#define-the-configs" title="Link to this heading">#</a></h3>
+<p>Next we can define some configs for these DAGs. These configs should be a list of dictionaries, with each dictionary representing the configs for each DAG. Each config must contain a dictionary <code class="docutils literal notranslate"><span class="pre">arg_types</span></code> that matches each of the root nodes in the DAG to an input type (currently the options are: num, slider, text, list, dict). If <code class="docutils literal notranslate"><span class="pre">arg_types</span></code> is not explicitly defined, then it will try to infer from type annotations in the function definitions, and then default to num. If slider is defined as the <code class="docutils literal notranslate"><span class="pre">arg_type</span></code> for any of the root nodes, then another dictionary <code class="docutils literal notranslate"><span class="pre">ranges</span></code> must be defined that matches each of the nodes designated to be slider with a min and max value for that slider. The configs for this example can be seen below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">configs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arg_types</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">a</span><span class="o">=</span><span class="s2">"num"</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="s2">"num"</span><span class="p">,</span>
+            <span class="n">cost_per_click</span><span class="o">=</span><span class="s2">"num"</span><span class="p">,</span>
+            <span class="n">revenue_per_click</span><span class="o">=</span><span class="s2">"num"</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arg_types</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">max_partners</span><span class="o">=</span><span class="s2">"slider"</span><span class="p">,</span>
+            <span class="n">cost_per_click</span><span class="o">=</span><span class="s2">"slider"</span><span class="p">,</span>
+            <span class="n">price_elasticity</span><span class="o">=</span><span class="s2">"slider"</span><span class="p">,</span>
+            <span class="n">partners</span><span class="o">=</span><span class="s2">"slider"</span><span class="p">,</span>
+            <span class="n">clicks_per_partner</span><span class="o">=</span><span class="s2">"slider"</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">ranges</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">max_partners</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">],</span>
+            <span class="n">cost_per_click</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+            <span class="n">price_elasticity</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+            <span class="n">partners</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span>
+            <span class="n">clicks_per_partner</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="make-the-app">
+<h3>Make the app<a class="headerlink" href="#make-the-app" title="Link to this heading">#</a></h3>
+<p>We can now make our app in a similar manner as the previous example, this time defining our configs, as well as defining <code class="docutils literal notranslate"><span class="pre">StaticPageFunc</span></code> as our page factory to keep all non-root nodes static.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dagapp.page_funcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPageFunc</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">dag_app</span><span class="p">,</span> <span class="n">dags</span><span class="o">=</span><span class="n">dags</span><span class="p">,</span> <span class="n">page_factory</span><span class="o">=</span><span class="n">StaticPageFunc</span><span class="p">,</span> <span class="n">configs</span><span class="o">=</span><span class="n">configs</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="run-the-app">
+<h3>Run the app<a class="headerlink" href="#run-the-app" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">streamlit</span> <span class="n">run</span> <span class="n">configs_example</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>… and this is what you get<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p><img alt="png" src="https://github.com/i2mint/dagapp/blob/master/docs/images/configs_example_1.png?raw=true" />
+<img alt="png" src="https://github.com/i2mint/dagapp/blob/master/docs/images/configs_example_2.png?raw=true" /></p>
+<p class="epythet-aggregates">This documentation as a single file: <a href="dagapp.md">dagapp.md</a> (Markdown, for agents).</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-22 15:36 UTC from <a href="https://github.com/i2mint/dagapp/commit/2b6bcfa5d7a3ee4d6c2488e374a4f95ae5f2c03e">2b6bcfa</a> (master) · dagapp 0.1.22 · <a href="about-this-build.html">about this build</a></p>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example">A simple example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-make-a-dag">First make a DAG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#then-make-an-app">Then make an app</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#then-run-the-app">Then run the app</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#and-this-is-what-you-get">… and this is what you get</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-more-complicated-example">A more complicated example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-dags">Define the DAGs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-configs">Define the configs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-the-app">Make the app</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-app">Run the app</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">… and this is what you get</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/index.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>

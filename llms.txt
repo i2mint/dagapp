@@ -1,0 +1,22 @@
+# dagapp
+
+> Making apps from DAGs by just snapping your fingers
+
+
+## Pages
+
+- [dagapp](index.html.md): Making apps from DAGs by just snapping your fingers
+- [API reference](api.html.md): | &#96;dagapp&#96;   | Making apps from DAGs   |
+- [dagapp](_autosummary/dagapp.html.md): Making apps from DAGs
+- [dagapp.base](_autosummary/dagapp.base.html.md): The base components for making apps from DAGs
+- [dagapp.page_funcs](_autosummary/dagapp.page_funcs.html.md): Different page functions used to turn dags to app
+- [dagapp.utils](_autosummary/dagapp.utils.html.md): | &#96;check_configs&#96;(dags, configs)                    | Checks the user defined configs to prevent err...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-09-22 15:36 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+
+## Optional
+
+- [dagapp.md](dagapp.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

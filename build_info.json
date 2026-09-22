@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-09-22T15:36:36Z",
+  "package": {
+    "name": "dagapp",
+    "version": "0.1.22",
+    "display_name": "dagapp",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "2b6bcfa5d7a3ee4d6c2488e374a4f95ae5f2c03e",
+    "short_commit": "2b6bcfa",
+    "branch": "master",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/i2mint/dagapp",
+    "commit_url": "https://github.com/i2mint/dagapp/commit/2b6bcfa5d7a3ee4d6c2488e374a4f95ae5f2c03e",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "i2mint/dagapp",
+    "sha": "2b6bcfa5d7a3ee4d6c2488e374a4f95ae5f2c03e",
+    "sha_in_history": true,
+    "ref": "refs/heads/master",
+    "ref_name": "master",
+    "run_id": "35748321760",
+    "run_url": "https://github.com/i2mint/dagapp/actions/runs/35748321760",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.12",
+    "sphinx": "9.1.0",
+    "docutils": "0.22.4",
+    "python": "3.12.14"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "pydata_sphinx_theme",
+    "accent": "#92323d",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 4,
+    "objects_documented": 23
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.1.23",
+    "relation": "behind",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/i2mint/dagapp && cd dagapp\ngit checkout 2b6bcfa5d7a3ee4d6c2488e374a4f95ae5f2c03e\npip install \"epythet==0.2.12\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install dagapp` gives newer code than these docs describe."
+    ]
+  }
+}

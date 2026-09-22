@@ -1,0 +1,15 @@
+﻿dagapp
+======
+
+.. automodule:: dagapp
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   base
+   page_funcs
+   utils

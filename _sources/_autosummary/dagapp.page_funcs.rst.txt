@@ -1,0 +1,15 @@
+dagapp.page\_funcs
+==================
+
+.. automodule:: dagapp.page_funcs
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BasePageFunc
+      SimplePageFunc
+      StaticPageFunc
+      VectorizePageFunc
+   
